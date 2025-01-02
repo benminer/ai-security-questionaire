@@ -42,7 +42,7 @@ export const analyseData = async (req: AnalyseDataRequest, res: Response) => {
 
 export const answerQuestions = async (questions: object, res: Response) => {
   try {
-    const prompt = "Answer the following questions. Respond in JSON format. Add the answer to each JSON object as a key-value pair with the key `answer`. Include questions as provided. Return only the JSON data.";
+    const prompt = "Answer the following questions. Include questions exactly as provided. In the response, return only JSON data where each question is an object with question and answer.";
 
     const modelInput = `${prompt} The questions are:\n\n${JSON.stringify(questions)}`;
 
