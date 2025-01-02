@@ -1,9 +1,12 @@
 import { http } from "@ampt/sdk";
 import express, { Router } from "express";
+import { analyseData } from "./gemini";
 
 // Create express app and router
 const app = express();
 const api = Router();
+
+app.use(express.json());
 
 // Mount api to /api base route
 app.use("/api", api);
@@ -11,6 +14,10 @@ app.use("/api", api);
 // Hello route: /api/hello
 api.get("/hello", (req, res) => {
   return res.status(200).send({ message: "Hello from the public api!" });
+});
+
+api.post("/gemini", (req, res) => {
+  return analyseData(req, res);
 });
 
 // Greet route: /api/greet/:name
@@ -26,6 +33,7 @@ api.get("/greet/:name", (req, res) => {
 
 // Post route: /api/submit
 api.post("/submit", async (req, res) => {
+  console.log(req.body);
   return res.status(200).send({
     body: req.body,
     message: "You just posted data",
