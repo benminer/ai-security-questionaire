@@ -187,7 +187,7 @@ api.get(
 );
 
 api.post(
-  "/answers",
+  "/similarQuestions",
   asyncHandler(async (req: Request, res: Response) => {
     if (!req.body.questions) {
       res.status(400).send({ error: "Questions are required" });
@@ -201,6 +201,8 @@ api.post(
 
     const questions = req.body.questions;
     const similarQuestions = await getQuestionNearestNeighbors(questions[0])
+
+    // TODO: look up known answers based on nearest neighbor hashes
 
     res.status(200).send(similarQuestions);
   })

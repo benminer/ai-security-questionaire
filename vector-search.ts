@@ -77,6 +77,7 @@ async function getEmbeddings(
   return callPredict();
 }
 
+// TODO: support batch, can probably pass multiple queries
 export async function getQuestionNearestNeighbors(query: string) {
   const queryEmbeddings = await getEmbeddings([query]);
   const queryEmbedding = queryEmbeddings[0].embedding;
@@ -127,6 +128,7 @@ export function getQuestionsFromCsvs(files: string[]): { questions: string[]; an
       questions.push(
         ...validQuestions.map((record: { Question: string }) => record.Question)
       );
+
       answers.push(
         ...validQuestions.map(
           (record: { Question: string; Answer: string }) => ({
