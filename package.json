@@ -1,27 +1,35 @@
 {
-  "name": "typescript-express-api",
+  "name": "ai-security-questionaire",
   "version": "1.0.0",
-  "description": "Ampt TypeScript Express API template",
+  "description": "AI Security Questionaire for the 2024 Scope3 AI Hackathon",
   "private": true,
   "main": "index.ts",
   "type": "module",
   "scripts": {
-    "start": "ampt",
-    "gitpod:ampt": "./node_modules/.bin/ampt"
+    "start": "ampt"
   },
   "dependencies": {
+    "@ampt/data": "^1.0.26",
     "@ampt/sdk": "^1.0.0",
     "@google-cloud/aiplatform": "^3.34.0",
     "@google-cloud/vertexai": "^1.9.2",
     "@google/generative-ai": "^0.21.0",
+    "cors": "^2.8.5",
     "csv-parse": "^5.6.0",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "luxon": "^3.5.0",
+    "ramda": "^0.30.1",
+    "uuid": "^11.0.3"
   },
   "ampt": {
     "app": "ai-security-questionaire",
     "org": "scope3"
   },
   "devDependencies": {
-    "@types/express": "^4.17.17"
+    "@types/express": "^4.17.17",
+    "@types/cors": "^2.8.17",
+    "@types/luxon": "^3.4.2",
+    "@types/ramda": "^0.30.2"
   }
 }
