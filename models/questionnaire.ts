@@ -1,10 +1,15 @@
 import { data } from "@ampt/data";
 import { events } from "@ampt/sdk";
+import { createHash } from "node:crypto";
 import { splitEvery, flatten } from "ramda";
 import { DateTime } from "luxon";
 import { v4 as uuidv4 } from "uuid";
 
 import { answerQuestionBatch, extractQuestions } from "../gemini";
+
+const hashQuestion = (question: string) => {
+  return createHash("sha256").update(question).digest("hex").slice(0, 12);
+};
 
 export enum QuestionnaireState {
   LOADED = "loaded",
@@ -42,9 +47,15 @@ export interface QuestionnaireRow {
   dateCompleted: number | undefined;
 }
 
+interface QuestionnaireAnswer {
+  question: string;
+  answer: string;
+  id: string;
+}
+
 export class Questionnaire {
   static prefix = "questionnaire";
-  static answerPrefix = "questionnaire.answer.batch";
+  static answerPrefix = "questionnaire.answer";
   static processAnswersEvent = "questionnaire.answer.batch";
 
   id: string;
@@ -104,10 +115,7 @@ export class Questionnaire {
           customerType: questionnaire.customerType,
         });
         console.info("answers", answers);
-        await data.set(
-          `${Questionnaire.answerPrefix}:${id}:${batchNumber}`,
-          answers
-        );
+        await Questionnaire.saveAnswers(id, answers);
       } catch (e) {
         console.error("Error answering batch", e);
         questionnaire.error = "Error answering batch";
@@ -125,6 +133,63 @@ export class Questionnaire {
         }
       }
     }
+  }
+
+  static async getAnswer(id: string, questionHash: string) {
+    const answer = await data.get<QuestionnaireAnswer>(
+      `${Questionnaire.answerPrefix}:${id}:${questionHash}`
+    );
+    return answer;
+  }
+
+  static async updateAnswer(
+    id: string,
+    _question: string,
+    _answer: string
+  ): Promise<QuestionnaireAnswer> {
+    const question = _question.trim();
+    const answer = _answer.trim();
+    const questionId = hashQuestion(question);
+    const result = await data.set<QuestionnaireAnswer>(
+      `${Questionnaire.answerPrefix}:${id}:${questionId}`,
+      {
+        question,
+        answer,
+        id: questionId,
+      },
+      { overwrite: true, meta: true }
+    );
+
+    return result.value;
+  }
+
+  static async saveAnswers(
+    id: string,
+    answers: { [question: string]: string }
+  ) {
+    const keyValuePairs = splitEvery(
+      25,
+      Object.entries(answers).map(([_question, _answer]) => {
+        const question = _question.trim();
+        const answer = _answer.trim();
+        const questionId = hashQuestion(question);
+        return {
+          key: `${Questionnaire.answerPrefix}:${id}:${questionId}`,
+          value: {
+            question,
+            answer,
+            id: questionId,
+          },
+        };
+      })
+    );
+
+    // data.set is limited to 25 keys at a time, so we need to split the array into chunks of 25
+    await Promise.all(
+      keyValuePairs.map((pair: { key: string; value: QuestionnaireAnswer }[]) =>
+        data.set(pair)
+      )
+    );
   }
 
   static async onCreated(event: { item: { value: QuestionnaireRow } }) {
@@ -188,20 +253,39 @@ export class Questionnaire {
     return items.map((item) => Questionnaire.fromRow(item.value));
   }
 
-  static async getAnswers(
-    id: string
-  ): Promise<{ [question: string]: string }[]> {
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    const { items } = await data.get<any>(
+  static async getAnswers(id: string): Promise<QuestionnaireAnswer[]> {
+    const { items } = await data.get<QuestionnaireAnswer>(
       `${Questionnaire.answerPrefix}:${id}:*`
     );
-    const answers = items.map((item) => item.value);
-    // this comes back as an array of arrays
-    return flatten(answers);
+    return items.map((item) => item.value);
   }
 
   async save() {
     await data.set(`${Questionnaire.prefix}:${this.id}`, this.toJson());
+  }
+
+  async reprocessAnswer(params: {
+    questionHash: string;
+  }): Promise<QuestionnaireAnswer | null> {
+    const { questionHash } = params;
+    const answer = await data.get<QuestionnaireAnswer>(
+      `${Questionnaire.answerPrefix}:${this.id}:${questionHash}`
+    );
+    if (answer) {
+      const newAnswer = await answerQuestionBatch({
+        questions: [answer.question],
+        type: this.type,
+        customerType: this.customerType,
+      });
+      if (Object.keys(newAnswer).length && newAnswer[answer.question]) {
+        return await Questionnaire.updateAnswer(
+          this.id,
+          answer.question,
+          newAnswer[answer.question]
+        );
+      }
+    }
+    return null;
   }
 
   async batchProcessAnswers() {

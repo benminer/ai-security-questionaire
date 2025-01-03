@@ -78,6 +78,39 @@ api.get(
   })
 );
 
+api.post(
+  "/questionnaire/:id/answer/:questionHash",
+  asyncHandler(async (req: Request, res: Response) => {
+    const questionHash = req.params.questionHash;
+    const [questionnaire, answer] = await Promise.all([
+      Questionnaire.get(req.params.id),
+      Questionnaire.getAnswer(req.params.id, questionHash),
+    ]);
+
+    if (!questionnaire) {
+      res.status(404).send({ error: "Questionnaire not found" });
+      return;
+    }
+
+    if (!answer) {
+      res.status(404).send({ error: "Answer not found" });
+      return;
+    }
+
+    const newAnswer = await questionnaire.reprocessAnswer({
+      questionHash,
+    });
+
+    if (newAnswer) {
+      res.status(200).send(newAnswer);
+      return;
+    }
+
+    res.status(500).send({ error: "Failed to reprocess answer" });
+    return;
+  })
+);
+
 api.get(
   "/questionnaire/:id/answers",
   asyncHandler(async (req: Request, res: Response) => {
