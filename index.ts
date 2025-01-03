@@ -36,6 +36,15 @@ api.post(
 );
 
 api.get(
+  "/questionnaires",
+  asyncHandler(async (_, res: Response) => {
+    const questionnaires = await Questionnaire.list();
+    res.status(200).send(questionnaires);
+    return;
+  })
+);
+
+api.get(
   "/questionnaire/:id",
   asyncHandler(async (req: Request, res: Response) => {
     const questionnaire = await Questionnaire.get(req.params.id);

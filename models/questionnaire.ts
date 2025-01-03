@@ -1,6 +1,7 @@
 import { data } from "@ampt/data";
 import { events } from "@ampt/sdk";
 import { splitEvery, flatten } from "ramda";
+import { DateTime } from "luxon";
 import { v4 as uuidv4 } from "uuid";
 
 import { answerQuestionBatch, extractQuestions } from "../gemini";
@@ -19,6 +20,8 @@ export interface QuestionnaireRow {
   json: string[] | undefined;
   error: string | undefined;
   state: QuestionnaireState;
+  dateCreated: number;
+  dateCompleted: number | undefined;
 }
 
 export class Questionnaire {
@@ -28,18 +31,22 @@ export class Questionnaire {
 
   id: string;
   text: string;
+  dateCreated: number;
   state: QuestionnaireState = QuestionnaireState.LOADED;
 
   json: string[] | undefined;
   error: string | undefined;
+  dateCompleted: number | undefined;
 
   constructor(params: QuestionnaireRow) {
-    const { id, text, json, error, state } = params;
+    const { id, text, json, error, state, dateCreated, dateCompleted } = params;
     this.id = id;
     this.text = text;
     this.json = json;
     this.error = error;
     this.state = state;
+    this.dateCreated = dateCreated || DateTime.now().toMillis();
+    this.dateCompleted = undefined;
   }
 
   static initListeners() {
@@ -77,6 +84,7 @@ export class Questionnaire {
         ) {
           questionnaire.state = QuestionnaireState.COMPLETED;
           console.info(`Questionnaire ${questionnaire.id} completed`);
+          questionnaire.dateCompleted = DateTime.now().toMillis();
           await questionnaire.save();
         }
       }
@@ -108,6 +116,8 @@ export class Questionnaire {
       json: undefined,
       error: undefined,
       state: QuestionnaireState.LOADED,
+      dateCreated: DateTime.now().toMillis(),
+      dateCompleted: undefined,
     });
     await questionnaire.save();
     return questionnaire;
@@ -177,6 +187,8 @@ export class Questionnaire {
       id: this.id,
       text: this.text,
       json: this.json,
+      dateCreated: this.dateCreated,
+      dateCompleted: this.dateCompleted,
       error: this.error,
       state: this.state,
     };
