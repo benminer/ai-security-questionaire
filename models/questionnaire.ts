@@ -14,11 +14,29 @@ export enum QuestionnaireState {
   COMPLETED = "completed",
 }
 
+export enum QuestionnaireType {
+  GENERIC_INBOUND_SALES_REQUEST = "generic_inbound_sales_request",
+  RFP = "rfp",
+  SECURITY_QUESTIONNAIRE = "security_questionnaire",
+  GDPR_QUESTIONNAIRE = "gdpr_questionnaire",
+  OTHER = "other",
+}
+
+export enum CustomerType {
+  GMP = "gmp",
+  CSP = "csp",
+  RTDP = "rtdp",
+  BRAND_SAFETY = "brand_safety",
+  AI = "ai",
+}
+
 export interface QuestionnaireRow {
   id: string;
   text: string;
   json: string[] | undefined;
   error: string | undefined;
+  type: QuestionnaireType;
+  customerType: CustomerType;
   state: QuestionnaireState;
   dateCreated: number;
   dateCompleted: number | undefined;
@@ -37,16 +55,30 @@ export class Questionnaire {
   json: string[] | undefined;
   error: string | undefined;
   dateCompleted: number | undefined;
+  type: QuestionnaireType;
+  customerType: CustomerType;
 
   constructor(params: QuestionnaireRow) {
-    const { id, text, json, error, state, dateCreated, dateCompleted } = params;
+    const {
+      id,
+      text,
+      json,
+      error,
+      state,
+      dateCreated,
+      dateCompleted,
+      type,
+      customerType,
+    } = params;
     this.id = id;
     this.text = text;
     this.json = json;
     this.error = error;
     this.state = state;
     this.dateCreated = dateCreated || DateTime.now().toMillis();
-    this.dateCompleted = undefined;
+    this.dateCompleted = dateCompleted;
+    this.type = type;
+    this.customerType = customerType;
   }
 
   static initListeners() {
@@ -66,7 +98,11 @@ export class Questionnaire {
     const questionnaire = await Questionnaire.get(id);
     if (questionnaire && questionnaire.state === QuestionnaireState.ANSWERING) {
       try {
-        const answers = await answerQuestionBatch(batch);
+        const answers = await answerQuestionBatch({
+          questions: batch,
+          type: questionnaire.type,
+          customerType: questionnaire.customerType,
+        });
         console.info("answers", answers);
         await data.set(
           `${Questionnaire.answerPrefix}:${id}:${batchNumber}`,
@@ -108,16 +144,22 @@ export class Questionnaire {
     }
   }
 
-  static async create(text: string) {
+  static async create(params: {
+    text: string;
+    type: QuestionnaireType;
+    customerType: CustomerType;
+  }) {
     const id = uuidv4();
     const questionnaire = new Questionnaire({
       id,
-      text,
+      text: params.text,
       json: undefined,
       error: undefined,
       state: QuestionnaireState.LOADED,
       dateCreated: DateTime.now().toMillis(),
       dateCompleted: undefined,
+      type: params.type,
+      customerType: params.customerType,
     });
     await questionnaire.save();
     return questionnaire;
@@ -189,6 +231,8 @@ export class Questionnaire {
       id: this.id,
       text: this.text,
       json: this.json,
+      type: this.type,
+      customerType: this.customerType,
       dateCreated: this.dateCreated,
       dateCompleted: this.dateCompleted,
       error: this.error,

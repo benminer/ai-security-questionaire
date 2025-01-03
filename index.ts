@@ -2,7 +2,11 @@ import { http } from "@ampt/sdk";
 import cors from "cors";
 import asyncHandler from "express-async-handler";
 import express, { Router, type Request, type Response } from "express";
-import { Questionnaire } from "./models/questionnaire";
+import {
+  Questionnaire,
+  QuestionnaireType,
+  CustomerType,
+} from "./models/questionnaire";
 import { analyseData } from "./gemini";
 
 // enable event listeners
@@ -29,7 +33,28 @@ api.post(
       res.status(400).send({ error: "Text is required" });
       return;
     }
-    const questionnaire = await Questionnaire.create(req.body.text);
+
+    if (
+      !req.body.type ||
+      !Object.values(QuestionnaireType).includes(req.body.type)
+    ) {
+      res.status(400).send({ error: "Invalid questionnaire type" });
+      return;
+    }
+
+    if (
+      !req.body.customerType ||
+      !Object.values(CustomerType).includes(req.body.customerType)
+    ) {
+      res.status(400).send({ error: "Invalid customer type" });
+      return;
+    }
+
+    const questionnaire = await Questionnaire.create({
+      text: req.body.text,
+      type: req.body.type,
+      customerType: req.body.customerType,
+    });
     res.status(200).send(questionnaire);
     return;
   })

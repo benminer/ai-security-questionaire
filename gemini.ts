@@ -4,6 +4,8 @@ import path from "node:path";
 import { readFile } from "node:fs/promises";
 import { params } from "@ampt/sdk";
 
+import type { QuestionnaireType, CustomerType } from "./models/questionnaire";
+
 const genAI = new GoogleGenerativeAI(params("GEMINI_API_KEY"));
 export const gemini = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 const tunedModel = genAI.getGenerativeModel({
@@ -30,7 +32,12 @@ export const extractQuestions = async (text: string) => {
   }
 };
 
-export const answerQuestionBatch = async (questions: string[]) => {
+export const answerQuestionBatch = async (params: {
+  questions: string[];
+  type: QuestionnaireType;
+  customerType: CustomerType;
+}) => {
+  const { questions, type, customerType } = params;
   const [info, policies] = await Promise.all([
     readFile(path.join("system-prompt-files", "info.txt"), "utf-8"),
     readFile(path.join("system-prompt-files", "policies.txt"), "utf-8"),
@@ -40,6 +47,7 @@ export const answerQuestionBatch = async (questions: string[]) => {
       You are an expert at answering RFI and security questions for Scope3. Answer to the best of your ability. Keep answers concise and to the point.
       Be sure to return the answer in JSON format, with the question as the key and the answer as the value.
       Note that these questions are all regarding Scope3, and may not always be phrased as a question.
+      This is a ${type} questionnaire for a potential ${customerType} customer. Use this information to better answer the questions.
       Here is some context:
       ${info}
       \n
