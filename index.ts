@@ -9,6 +9,7 @@ import {
 } from "./models/questionnaire";
 import { analyseData } from "./gemini";
 import { Answer } from "./models/answer";
+import { getQuestionNearestNeighbors } from "./vector-search";
 
 // enable event listeners
 Questionnaire.initListeners();
@@ -182,6 +183,26 @@ api.get(
     const answers = await Answer.listByQuestionnaireId(req.params.id);
     res.status(200).send(answers.map((answer) => answer.toJson()));
     return;
+  })
+);
+
+api.post(
+  "/answers",
+  asyncHandler(async (req: Request, res: Response) => {
+    if (!req.body.questions) {
+      res.status(400).send({ error: "Questions are required" });
+      return;
+    }
+
+    if (!Array.isArray(req.body.questions) || !req.body.questions.every((q) => typeof q === "string")) {
+      res.status(400).send({ error: "Questions must be an array of strings" });
+      return;
+    }
+
+    const questions = req.body.questions;
+    const similarQuestions = await getQuestionNearestNeighbors(questions[0])
+
+    res.status(200).send(similarQuestions);
   })
 );
 
