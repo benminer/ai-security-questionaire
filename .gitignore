@@ -4,3 +4,6 @@ node_modules
 .ampt*rc
 .ampt/
 .DS_Store
+google-credentials.json
+embeddings.json
+*.csv
