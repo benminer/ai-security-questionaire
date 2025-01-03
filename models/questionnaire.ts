@@ -167,18 +167,20 @@ export class Questionnaire {
       this.state = QuestionnaireState.ANSWERING;
       await this.save();
       const batches = splitEvery(10, this.json);
-      batches.map(async (batch, index) => {
-        await events.publish(
-          Questionnaire.processAnswersEvent,
-          { after: index * 50 }, // delay each batch by 50ms
-          {
-            id: this.id,
-            totalBatches: batches.length,
-            batchNumber: index,
-            batch,
-          }
-        );
-      });
+      await Promise.all(
+        batches.map(async (batch, index) =>
+          events.publish(
+            Questionnaire.processAnswersEvent,
+            { after: index * 50 }, // delay each batch by 50ms
+            {
+              id: this.id,
+              totalBatches: batches.length,
+              batchNumber: index,
+              batch,
+            }
+          )
+        )
+      );
     }
   }
 
