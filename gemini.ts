@@ -38,9 +38,10 @@ export const answerQuestionBatch = async (params: {
   customerType: CustomerType;
 }) => {
   const { questions, type, customerType } = params;
-  const [info, policies] = await Promise.all([
+  const [info, policies, methodology] = await Promise.all([
     readFile(path.join("system-prompt-files", "info.txt"), "utf-8"),
     readFile(path.join("system-prompt-files", "policies.txt"), "utf-8"),
+    readFile(path.join("system-prompt-files", "methodology.txt"), "utf-8"),
   ]);
   const result = await gemini.generateContent({
     systemInstruction: `
@@ -64,6 +65,8 @@ export const answerQuestionBatch = async (params: {
       ${info}
       \n
       ${policies}
+      \n
+      ${methodology}
       `,
     contents: [
       {
