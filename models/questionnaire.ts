@@ -1,10 +1,11 @@
 import { data } from "@ampt/data";
 import { events } from "@ampt/sdk";
 import { createHash } from "node:crypto";
-import { splitEvery, flatten } from "ramda";
+import { splitEvery } from "ramda";
 import { DateTime } from "luxon";
 import { v4 as uuidv4 } from "uuid";
 
+import { Answer } from "./answer";
 import { answerQuestionBatch, extractQuestions } from "../gemini";
 
 const hashQuestion = (question: string) => {
@@ -33,10 +34,12 @@ export enum CustomerType {
   RTDP = "rtdp",
   BRAND_SAFETY = "brand_safety",
   AI = "ai",
+  OTHER = "other",
 }
 
 export interface QuestionnaireRow {
   id: string;
+  name: string;
   text: string;
   json: string[] | undefined;
   error: string | undefined;
@@ -45,6 +48,10 @@ export interface QuestionnaireRow {
   state: QuestionnaireState;
   dateCreated: number;
   dateCompleted: number | undefined;
+}
+
+enum QuestionnaireQueryMap {
+  Name = "label1",
 }
 
 interface QuestionnaireAnswer {
@@ -60,6 +67,7 @@ export class Questionnaire {
   static processAnswersEvent = "questionnaire.answer.batch";
 
   id: string;
+  name: string;
   text: string;
   dateCreated: number;
   state: QuestionnaireState = QuestionnaireState.LOADED;
@@ -74,6 +82,7 @@ export class Questionnaire {
     const {
       id,
       text,
+      name,
       json,
       error,
       state,
@@ -83,6 +92,7 @@ export class Questionnaire {
       customerType,
     } = params;
     this.id = id;
+    this.name = name;
     this.text = text;
     this.json = json;
     this.error = error;
@@ -116,7 +126,10 @@ export class Questionnaire {
           customerType: questionnaire.customerType,
         });
         console.info("answers", answers);
-        await Questionnaire.saveAnswers(id, answers);
+        await Answer.batchCreate({
+          questionnaireId: questionnaire.id,
+          answers,
+        });
       } catch (e) {
         console.error("Error answering batch", e);
         questionnaire.error = "Error answering batch";
@@ -136,70 +149,10 @@ export class Questionnaire {
     }
   }
 
-  static async getAnswer(id: string, questionHash: string) {
-    const answer = await data.get<QuestionnaireAnswer>(
-      `${Questionnaire.answerPrefix}:${id}:${questionHash}`
-    );
-    return answer;
-  }
-
-  static async updateAnswer(params: {
-    id: string;
-    _question: string;
-    _answer: string;
-    approved?: boolean;
-  }): Promise<QuestionnaireAnswer> {
-    const { id, _question, _answer, approved = undefined } = params;
-    const question = _question.trim();
-    const answer = _answer.trim();
-    const questionId = hashQuestion(question);
-    const result = await data.set<QuestionnaireAnswer>(
-      `${Questionnaire.answerPrefix}:${id}:${questionId}`,
-      {
-        question,
-        answer,
-        id: questionId,
-        approved,
-      },
-      { overwrite: true, meta: true }
-    );
-
-    return result.value;
-  }
-
-  static async saveAnswers(
-    id: string,
-    answers: { [question: string]: string }
-  ) {
-    const keyValuePairs = splitEvery(
-      25,
-      Object.entries(answers).map(([_question, _answer]) => {
-        const question = _question.trim();
-        const answer = _answer.trim();
-        const questionId = hashQuestion(question);
-        return {
-          key: `${Questionnaire.answerPrefix}:${id}:${questionId}`,
-          value: {
-            question,
-            answer,
-            id: questionId,
-            approved: undefined,
-          },
-        };
-      })
-    );
-
-    // data.set is limited to 25 keys at a time, so we need to split the array into chunks of 25
-    await Promise.all(
-      keyValuePairs.map((pair: { key: string; value: QuestionnaireAnswer }[]) =>
-        data.set(pair)
-      )
-    );
-  }
-
   static async onCreated(event: { item: { value: QuestionnaireRow } }) {
     const item = event.item.value;
     const questionnaire = Questionnaire.fromRow(item as QuestionnaireRow);
+    console.info(`Processing ${questionnaire.name}...`);
     const questions = await extractQuestions(questionnaire.text);
     console.info("extracted questions", questions);
 
@@ -207,7 +160,12 @@ export class Questionnaire {
       questionnaire.json = questions;
       questionnaire.state = QuestionnaireState.PROCESSING;
       await questionnaire.save();
+      await questionnaire.batchProcessAnswers();
     } else {
+      console.error("Error extracting questions", {
+        name: questionnaire.name,
+        questions,
+      });
       questionnaire.state = QuestionnaireState.ERROR;
       questionnaire.error = "Error extracting questions";
       await questionnaire.save();
@@ -216,27 +174,64 @@ export class Questionnaire {
 
   static async create(params: {
     text: string;
-    type: QuestionnaireType;
-    customerType: CustomerType;
+    name: string;
+    type?: QuestionnaireType;
+    customerType?: CustomerType;
   }) {
+    const {
+      text,
+      name,
+      type = QuestionnaireType.OTHER,
+      customerType = CustomerType.OTHER,
+    } = params;
+
     const id = uuidv4();
     const questionnaire = new Questionnaire({
       id,
-      text: params.text,
+      text,
+      name,
       json: undefined,
       error: undefined,
       state: QuestionnaireState.LOADED,
       dateCreated: DateTime.now().toMillis(),
       dateCompleted: undefined,
-      type: params.type,
-      customerType: params.customerType,
+      type,
+      customerType,
     });
+
     await questionnaire.save();
     return questionnaire;
   }
 
   static fromRow(row: QuestionnaireRow) {
     return new Questionnaire(row);
+  }
+
+  static async getByName(name: string) {
+    const { items = [] } = await data.getByLabel<QuestionnaireRow>(
+      QuestionnaireQueryMap.Name,
+      `questionnaire:${name}*`
+    );
+    return items[0] ? Questionnaire.fromRow(items[0].value) : null;
+  }
+
+  static async searchByName(
+    name: string,
+    lastKey?: string
+  ): Promise<{ questionnaires: QuestionnaireRow[]; lastKey?: string } | null> {
+    const { items = [], lastKey: _lastKey } =
+      await data.getByLabel<QuestionnaireRow>(
+        QuestionnaireQueryMap.Name,
+        `questionnaire:${name}*`,
+        {
+          start: lastKey,
+        }
+      );
+
+    return {
+      questionnaires: items.map((item) => item.value),
+      lastKey: _lastKey,
+    };
   }
 
   static async get(id: string): Promise<Questionnaire | null> {
@@ -258,75 +253,44 @@ export class Questionnaire {
     return items.map((item) => Questionnaire.fromRow(item.value));
   }
 
-  static async getAnswers(id: string): Promise<QuestionnaireAnswer[]> {
-    const { items } = await data.get<QuestionnaireAnswer>(
-      `${Questionnaire.answerPrefix}:${id}:*`
-    );
-    return items.map((item) => item.value);
-  }
-
   async save() {
-    await data.set(`${Questionnaire.prefix}:${this.id}`, this.toJson());
+    await data.set(`${Questionnaire.prefix}:${this.id}`, this.toJson(), {
+      [QuestionnaireQueryMap.Name]: `questionnaire-${this.name}`,
+    });
+    console.info("saved questionnaire", this.id, this.name);
   }
 
-  async approveAllAnswers() {
-    const answers = await Questionnaire.getAnswers(this.id);
-    await Promise.all(
-      answers.map((answer) =>
-        Questionnaire.updateAnswer({
-          id: this.id,
-          _question: answer.question,
-          _answer: answer.answer,
-          approved: true,
-        })
-      )
-    );
-  }
-
-  async approveAnswer(params: {
-    questionHash: string;
-  }): Promise<QuestionnaireAnswer | null> {
-    const { questionHash } = params;
-    const answer = await Questionnaire.getAnswer(this.id, questionHash);
-    if (answer) {
-      return await Questionnaire.updateAnswer({
-        id: this.id,
-        _question: answer.question,
-        _answer: answer.answer,
-        approved: true,
-      });
-    }
-    return null;
-  }
-
-  async reprocessAnswer(params: {
-    questionHash: string;
-  }): Promise<QuestionnaireAnswer | null> {
-    const { questionHash } = params;
-    const answer = await data.get<QuestionnaireAnswer>(
-      `${Questionnaire.answerPrefix}:${this.id}:${questionHash}`
-    );
-    if (answer) {
-      const newAnswer = await answerQuestionBatch({
-        questions: [answer.question],
-        type: this.type,
-        customerType: this.customerType,
-      });
-      if (Object.keys(newAnswer).length && newAnswer[answer.question]) {
-        return await Questionnaire.updateAnswer({
-          id: this.id,
-          _question: answer.question,
-          _answer: newAnswer[answer.question],
-        });
+  async delete(params: { removeAnswers: boolean }) {
+    if (
+      this.state === QuestionnaireState.COMPLETED ||
+      this.state === QuestionnaireState.ERROR
+    ) {
+      const { removeAnswers } = params || { removeAnswers: false };
+      await data.remove(`${Questionnaire.prefix}:${this.id}`);
+      console.info(`Deleted questionnaire ${this.name}`);
+      if (removeAnswers) {
+        const answers = await Answer.listByQuestionnaireId(this.id);
+        await Promise.all(answers.map((answer) => answer.delete()));
+        console.info(
+          `Deleted ${answers.length} answers for questionnaire ${this.name}`
+        );
       }
+    } else {
+      throw new Error(
+        `Cannot Delete Questionnaire while in ${this.state} state!`
+      );
     }
-    return null;
   }
 
   async batchProcessAnswers() {
     if (this.json && this.state === QuestionnaireState.PROCESSING) {
       this.state = QuestionnaireState.ANSWERING;
       await this.save();
+
+      console.info(
+        `answering ${this.json?.length} questions for questionnaire ${this.id}`
+      );
+
       const batches = splitEvery(10, this.json);
       await Promise.all(
         batches.map(async (batch, index) =>
@@ -345,10 +309,11 @@ export class Questionnaire {
     }
   }
 
-  toJson() {
+  toJson(): QuestionnaireRow {
     return {
       id: this.id,
       text: this.text,
+      name: this.name,
       json: this.json,
       type: this.type,
       customerType: this.customerType,

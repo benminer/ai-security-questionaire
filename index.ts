@@ -8,6 +8,7 @@ import {
   CustomerType,
 } from "./models/questionnaire";
 import { analyseData } from "./gemini";
+import { Answer } from "./models/answer";
 
 // enable event listeners
 Questionnaire.initListeners();
@@ -35,7 +36,7 @@ api.post(
     }
 
     if (
-      !req.body.type ||
+      req.body.type &&
       !Object.values(QuestionnaireType).includes(req.body.type)
     ) {
       res.status(400).send({ error: "Invalid questionnaire type" });
@@ -43,16 +44,40 @@ api.post(
     }
 
     if (
-      !req.body.customerType ||
+      req.body.customerType &&
       !Object.values(CustomerType).includes(req.body.customerType)
     ) {
       res.status(400).send({ error: "Invalid customer type" });
       return;
     }
 
+    if (!req.body.name) {
+      res.status(400).send({ error: "Name is required" });
+      return;
+    }
+
+    const nameRegex = /^[a-zA-Z0-9\s-_]+$/;
+    if (!nameRegex.test(req.body.name)) {
+      res.status(400).send({
+        error:
+          "Name can only contain letters, numbers, spaces, hyphens and underscores",
+      });
+      return;
+    }
+
+    const existingQuestionnaire = await Questionnaire.getByName(req.body.name);
+
+    if (existingQuestionnaire) {
+      res.status(400).send({
+        error: `Questionnaire already exists for name ${req.body.name}!`,
+      });
+      return;
+    }
+
     const questionnaire = await Questionnaire.create({
       text: req.body.text,
       type: req.body.type,
+      name: req.body.name,
       customerType: req.body.customerType,
     });
     res.status(200).send(questionnaire);
@@ -79,7 +104,7 @@ api.post(
       return;
     }
 
-    await questionnaire.approveAllAnswers();
+    await Answer.approveForQuestionnaire(questionnaire.id);
     res.status(200).send({ success: true });
     return;
   })
@@ -95,12 +120,12 @@ api.get(
 );
 
 api.post(
-  "/questionnaire/:id/answer/:questionHash",
+  "/questionnaire/:id/answer/:questionHash/reprocess",
   asyncHandler(async (req: Request, res: Response) => {
     const questionHash = req.params.questionHash;
     const [questionnaire, answer] = await Promise.all([
       Questionnaire.get(req.params.id),
-      Questionnaire.getAnswer(req.params.id, questionHash),
+      Answer.getByQuestionnaireIdAndHash(req.params.id, questionHash),
     ]);
 
     if (!questionnaire) {
@@ -113,30 +138,39 @@ api.post(
       return;
     }
 
-    const newAnswer = await questionnaire.reprocessAnswer({
-      questionHash,
-    });
-
-    if (newAnswer) {
-      res.status(200).send(newAnswer);
-      return;
+    try {
+      await answer.reprocess();
+      res.status(200).send(answer);
+    } catch (e) {
+      res.status(500).send({ error: "Failed to reprocess answer" });
     }
-
-    res.status(500).send({ error: "Failed to reprocess answer" });
     return;
   })
 );
 
-api.post(
-  "/questionnaire/:id/answer/:questionHash/approve",
+api.patch(
+  "/questionnaire/:id/answer/:questionHash",
   asyncHandler(async (req: Request, res: Response) => {
+    const { approved, answer: newAnswer } = req.body;
     const questionHash = req.params.questionHash;
-    const questionnaire = await Questionnaire.get(req.params.id);
+
+    const [questionnaire, answer] = await Promise.all([
+      Questionnaire.get(req.params.id),
+      Answer.getByQuestionHash(questionHash),
+    ]);
+
     if (!questionnaire) {
       res.status(404).send({ error: "Questionnaire not found" });
       return;
     }
-    const answer = await questionnaire.approveAnswer({ questionHash });
+
+    if (!answer) {
+      res.status(404).send({ error: "Answer not found" });
+      return;
+    }
+
+    await answer.update({ approved, answer: newAnswer });
+
     res.status(200).send(answer);
     return;
   })
@@ -145,8 +179,8 @@ api.post(
 api.get(
   "/questionnaire/:id/answers",
   asyncHandler(async (req: Request, res: Response) => {
-    const answers = await Questionnaire.getAnswers(req.params.id);
-    res.status(200).send(answers);
+    const answers = await Answer.listByQuestionnaireId(req.params.id);
+    res.status(200).send(answers.map((answer) => answer.toJson()));
     return;
   })
 );

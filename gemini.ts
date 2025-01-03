@@ -4,7 +4,7 @@ import path from "node:path";
 import { readFile } from "node:fs/promises";
 import { params } from "@ampt/sdk";
 
-import { QuestionnaireType, CustomerType } from "./models/questionnaire";
+import { QuestionnaireType, type CustomerType } from "./models/questionnaire";
 
 const genAI = new GoogleGenerativeAI(params("GEMINI_API_KEY"));
 export const gemini = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -44,8 +44,15 @@ export const answerQuestionBatch = async (params: {
   ]);
   const result = await gemini.generateContent({
     systemInstruction: `
-      You are an expert at answering RFI and security questions for Scope3. Answer to the best of your ability. Keep answers concise and to the point.
-      Be sure to return the answer in JSON format, with the question as the key and the answer as the value.
+      You are an expert at answering RFI and security questions for Scope3. 
+      IMPORTANT: You must ONLY return a valid JSON object with no additional text or markdown formatting.
+      The response must follow this exact format:
+      {
+        "question1": "answer1",
+        "question2": "answer2"
+      }
+      Answer to the best of your ability. Keep answers concise and to the point.
+      For multi-line answers, join them with a newline, the JSON should not be nested!
       Note that these questions are all regarding Scope3, and may not always be phrased as a question.
       ${
         // Only add this instruction if the questionnaire type is not OTHER
@@ -66,8 +73,10 @@ export const answerQuestionBatch = async (params: {
     ],
   });
   const resultText = result.response.text();
-  const questionAnswers = JSON.parse(resultText.replace(/```(json)?/g, ""));
-  return questionAnswers;
+  console.log("\nresultText", resultText);
+  const questionAnswers = resultText.replace(/```(json)?/g, "");
+  const parsed = JSON.parse(questionAnswers);
+  return parsed;
 };
 
 export const analyseData = async (req: AnalyseDataRequest, res: Response) => {
