@@ -69,6 +69,22 @@ api.get(
   })
 );
 
+api.post(
+  "/questionnaire/:id/approve",
+  asyncHandler(async (req: Request, res: Response) => {
+    const questionnaire = await Questionnaire.get(req.params.id);
+
+    if (!questionnaire) {
+      res.status(404).send({ error: "Questionnaire not found" });
+      return;
+    }
+
+    await questionnaire.approveAllAnswers();
+    res.status(200).send({ success: true });
+    return;
+  })
+);
+
 api.get(
   "/questionnaire/:id",
   asyncHandler(async (req: Request, res: Response) => {
@@ -107,6 +123,21 @@ api.post(
     }
 
     res.status(500).send({ error: "Failed to reprocess answer" });
+    return;
+  })
+);
+
+api.post(
+  "/questionnaire/:id/answer/:questionHash/approve",
+  asyncHandler(async (req: Request, res: Response) => {
+    const questionHash = req.params.questionHash;
+    const questionnaire = await Questionnaire.get(req.params.id);
+    if (!questionnaire) {
+      res.status(404).send({ error: "Questionnaire not found" });
+      return;
+    }
+    const answer = await questionnaire.approveAnswer({ questionHash });
+    res.status(200).send(answer);
     return;
   })
 );

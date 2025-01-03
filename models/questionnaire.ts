@@ -51,6 +51,7 @@ interface QuestionnaireAnswer {
   question: string;
   answer: string;
   id: string;
+  approved: boolean | undefined;
 }
 
 export class Questionnaire {
@@ -142,11 +143,13 @@ export class Questionnaire {
     return answer;
   }
 
-  static async updateAnswer(
-    id: string,
-    _question: string,
-    _answer: string
-  ): Promise<QuestionnaireAnswer> {
+  static async updateAnswer(params: {
+    id: string;
+    _question: string;
+    _answer: string;
+    approved?: boolean;
+  }): Promise<QuestionnaireAnswer> {
+    const { id, _question, _answer, approved = undefined } = params;
     const question = _question.trim();
     const answer = _answer.trim();
     const questionId = hashQuestion(question);
@@ -156,6 +159,7 @@ export class Questionnaire {
         question,
         answer,
         id: questionId,
+        approved,
       },
       { overwrite: true, meta: true }
     );
@@ -179,6 +183,7 @@ export class Questionnaire {
             question,
             answer,
             id: questionId,
+            approved: undefined,
           },
         };
       })
@@ -264,6 +269,36 @@ export class Questionnaire {
     await data.set(`${Questionnaire.prefix}:${this.id}`, this.toJson());
   }
 
+  async approveAllAnswers() {
+    const answers = await Questionnaire.getAnswers(this.id);
+    await Promise.all(
+      answers.map((answer) =>
+        Questionnaire.updateAnswer({
+          id: this.id,
+          _question: answer.question,
+          _answer: answer.answer,
+          approved: true,
+        })
+      )
+    );
+  }
+
+  async approveAnswer(params: {
+    questionHash: string;
+  }): Promise<QuestionnaireAnswer | null> {
+    const { questionHash } = params;
+    const answer = await Questionnaire.getAnswer(this.id, questionHash);
+    if (answer) {
+      return await Questionnaire.updateAnswer({
+        id: this.id,
+        _question: answer.question,
+        _answer: answer.answer,
+        approved: true,
+      });
+    }
+    return null;
+  }
+
   async reprocessAnswer(params: {
     questionHash: string;
   }): Promise<QuestionnaireAnswer | null> {
@@ -278,11 +313,11 @@ export class Questionnaire {
         customerType: this.customerType,
       });
       if (Object.keys(newAnswer).length && newAnswer[answer.question]) {
-        return await Questionnaire.updateAnswer(
-          this.id,
-          answer.question,
-          newAnswer[answer.question]
-        );
+        return await Questionnaire.updateAnswer({
+          id: this.id,
+          _question: answer.question,
+          _answer: newAnswer[answer.question],
+        });
       }
     }
     return null;
