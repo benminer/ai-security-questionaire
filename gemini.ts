@@ -21,7 +21,7 @@ export interface AnalyseDataRequest extends Request {
 export const extractQuestions = async (text: string) => {
   try {
     const result = await gemini.generateContent([
-      `${text}. Extract only the questions in a JSON format as an array of strings. Return only the JSON data`,
+      `${text}. Extract only the questions in a JSON format as an array of strings. Each question should be an element in the array. Ignore answers or other texts. Return only the JSON data`,
     ]);
     const resultText = result.response.text();
     const questions = JSON.parse(resultText.replace(/```(json)?/g, ""));
@@ -46,13 +46,7 @@ export const answerQuestionBatch = async (params: {
   const result = await gemini.generateContent({
     systemInstruction: `
       You are an expert at answering RFI and security questions for Scope3. 
-      IMPORTANT: You must ONLY return a valid JSON object with no additional text or markdown formatting.
-      The response must follow this exact format:
-      {
-        "question1": "answer1",
-        "question2": "answer2"
-      }
-      Answer to the best of your ability. Keep answers concise and to the point.
+      IMPORTANT: You must ONLY return a valid JSON object with no additional text or markdown formatting. The JSON object must use the "question" as key and "answer" as value. Answer to the best of your ability. Keep answers concise and to the point.
       For multi-line answers, join them with a newline, the JSON should not be nested!
       Note that these questions are all regarding Scope3, and may not always be phrased as a question.
       ${
