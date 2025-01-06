@@ -128,6 +128,16 @@ api.get(
   })
 );
 
+api.delete(
+  "/questionnaire/:id",
+  asyncHandler(async (req: Request, res: Response) => {
+    const questionnaire = await Questionnaire.get(req.params.id);
+    await questionnaire?.delete({ removeAnswers: true });
+    res.status(200).send({ success: true });
+    return;
+  })
+);
+
 api.post(
   "/questionnaire/:id/answer/:questionHash/reprocess",
   asyncHandler(async (req: Request, res: Response) => {

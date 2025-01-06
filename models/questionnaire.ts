@@ -1,16 +1,11 @@
 import { data } from "@ampt/data";
 import { events } from "@ampt/sdk";
-import { createHash } from "node:crypto";
 import { splitEvery } from "ramda";
 import { DateTime } from "luxon";
 import { v4 as uuidv4 } from "uuid";
 
 import { Answer } from "./answer";
 import { answerQuestionBatch, extractQuestions } from "../gemini";
-
-const hashQuestion = (question: string) => {
-  return createHash("sha256").update(question).digest("hex").slice(0, 12);
-};
 
 export enum QuestionnaireState {
   LOADED = "loaded",
@@ -72,7 +67,7 @@ export class Questionnaire {
   type: QuestionnaireType;
   customerType: CustomerType;
   approvedAt: number | undefined;
-  totalAnswersApproved: number = 0;
+  totalAnswersApproved = 0;
 
   constructor(params: QuestionnaireRow) {
     const {

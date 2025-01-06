@@ -1,4 +1,5 @@
 import * as aiplatform from "@google-cloud/aiplatform";
+import { params } from "@ampt/sdk";
 import { readFileSync } from "node:fs";
 import { parse } from "csv-parse/sync";
 import { Answer, type AnswerRow } from "./models/answer";
@@ -10,9 +11,7 @@ const DEPLOYED_INDEX_ID = "ai_hackathon_security_ques_1735921282266";
 const PROJECT_ID = "scope3-dev";
 const LOCATION = "us-central1";
 
-const CREDENTIALS = JSON.parse(
-  readFileSync("./google-credentials.json", "utf-8")
-);
+const CREDENTIALS = JSON.parse(params("GOOGLE_CREDENTIALS_JSON"));
 interface Embedding {
   id: string;
   question: string;
