@@ -249,7 +249,9 @@ export class Questionnaire {
       const answers = await Answer.listByQuestionnaireId(id);
       const questionnaire = Questionnaire.fromRow(dbQuestionnaire);
 
-      questionnaire.totalAnswersApproved = answers.filter((answer) => answer.approved).length;
+      questionnaire.totalAnswersApproved = answers.filter(
+        (answer) => answer.approved
+      ).length;
 
       return questionnaire;
     }
@@ -261,7 +263,19 @@ export class Questionnaire {
     const { items } = await data.get<QuestionnaireRow>(
       `${Questionnaire.prefix}:*`
     );
-    return items.map((item) => Questionnaire.fromRow(item.value));
+
+    const questionnaires = items.map(async (item) => {
+      const answers = await Answer.listByQuestionnaireId(item.value.id);
+      const questionnaire = Questionnaire.fromRow(item.value);
+
+      questionnaire.totalAnswersApproved = answers.filter(
+        (answer) => answer.approved
+      ).length;
+
+      return questionnaire;
+    });
+
+    return await Promise.all(questionnaires);
   }
 
   static async approve(id: string): Promise<Questionnaire | null> {
