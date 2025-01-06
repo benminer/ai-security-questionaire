@@ -48,6 +48,7 @@ export interface QuestionnaireRow {
   state: QuestionnaireState;
   dateCreated: number;
   dateCompleted: number | undefined;
+  approvedAt: number | undefined;
 }
 
 enum QuestionnaireQueryMap {
@@ -77,6 +78,8 @@ export class Questionnaire {
   dateCompleted: number | undefined;
   type: QuestionnaireType;
   customerType: CustomerType;
+  approvedAt: number | undefined;
+  totalAnswersApproved: number = 0;
 
   constructor(params: QuestionnaireRow) {
     const {
@@ -90,6 +93,7 @@ export class Questionnaire {
       dateCompleted,
       type,
       customerType,
+      approvedAt,
     } = params;
     this.id = id;
     this.name = name;
@@ -101,6 +105,7 @@ export class Questionnaire {
     this.dateCompleted = dateCompleted;
     this.type = type;
     this.customerType = customerType;
+    this.approvedAt = approvedAt;
   }
 
   static initListeners() {
@@ -197,6 +202,7 @@ export class Questionnaire {
       dateCompleted: undefined,
       type,
       customerType,
+      approvedAt: undefined,
     });
 
     await questionnaire.save();
@@ -235,12 +241,17 @@ export class Questionnaire {
   }
 
   static async get(id: string): Promise<Questionnaire | null> {
-    const questionnaire = await data.get<QuestionnaireRow>(
+    const dbQuestionnaire = await data.get<QuestionnaireRow>(
       `${Questionnaire.prefix}:${id}`
     );
 
-    if (questionnaire) {
-      return Questionnaire.fromRow(questionnaire);
+    if (dbQuestionnaire) {
+      const answers = await Answer.listByQuestionnaireId(id);
+      const questionnaire = Questionnaire.fromRow(dbQuestionnaire);
+
+      questionnaire.totalAnswersApproved = answers.filter((answer) => answer.approved).length;
+
+      return questionnaire;
     }
 
     return null;
@@ -251,6 +262,18 @@ export class Questionnaire {
       `${Questionnaire.prefix}:*`
     );
     return items.map((item) => Questionnaire.fromRow(item.value));
+  }
+
+  static async approve(id: string): Promise<Questionnaire | null> {
+    const questionnaire = await Questionnaire.get(id);
+
+    if (questionnaire) {
+      questionnaire.approvedAt = DateTime.now().toMillis();
+      await questionnaire.save();
+      return questionnaire;
+    }
+
+    return null;
   }
 
   async save() {
@@ -319,6 +342,7 @@ export class Questionnaire {
       customerType: this.customerType,
       dateCreated: this.dateCreated,
       dateCompleted: this.dateCompleted,
+      approvedAt: this.approvedAt,
       error: this.error,
       state: this.state,
     };
