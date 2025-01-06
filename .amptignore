@@ -2,3 +2,4 @@
 .ampt*rc
 .devcontainer.json
 .gitpod.yml
+!google-credentials.json

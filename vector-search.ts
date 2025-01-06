@@ -1,7 +1,7 @@
 import * as aiplatform from "@google-cloud/aiplatform";
 import { readFileSync } from "node:fs";
 import { parse } from "csv-parse/sync";
-import { Answer, AnswerRow } from "./models/answer";
+import { Answer, type AnswerRow } from "./models/answer";
 
 const API_ENDPOINT = "14814207.us-central1-506564556600.vdb.vertexai.goog";
 const INDEX_ENDPOINT =
@@ -10,6 +10,9 @@ const DEPLOYED_INDEX_ID = "ai_hackathon_security_ques_1735921282266";
 const PROJECT_ID = "scope3-dev";
 const LOCATION = "us-central1";
 
+const CREDENTIALS = JSON.parse(
+  readFileSync("./google-credentials.json", "utf-8")
+);
 interface Embedding {
   id: string;
   question: string;
@@ -43,7 +46,10 @@ export async function getEmbeddings(
 ): Promise<{ id: string; question: string; embedding: number[] }[]> {
   const { PredictionServiceClient } = aiplatform.v1;
   const { helpers } = aiplatform;
-  const clientOptions = { apiEndpoint: apiEndpoint };
+  const clientOptions = {
+    apiEndpoint: apiEndpoint,
+    credentials: CREDENTIALS,
+  };
   const endpoint = `projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${model}`;
 
   async function callPredict(inputs: string[]) {
@@ -96,6 +102,7 @@ export async function getQuestionNearestNeighbors(questions: string[]) {
   const embeddings = embeddingsWithMetadata.map((e) => e.embedding);
   const endpointClient = new aiplatform.v1.MatchServiceClient({
     apiEndpoint: API_ENDPOINT,
+    credentials: CREDENTIALS,
   });
 
   const queries = embeddings.map((embedding) => ({
@@ -115,7 +122,7 @@ export async function getQuestionNearestNeighbors(questions: string[]) {
   return response?.[0].nearestNeighbors?.map((neighborData, index) => {
     const neighbors: { hash: string; distance: number }[] = [];
 
-    neighborData?.neighbors?.forEach((neighbor) => {
+    for (const neighbor of neighborData?.neighbors ?? []) {
       const datapoint = neighbor.datapoint?.datapointId;
 
       if (datapoint != null && neighbor.distance != null) {
@@ -124,7 +131,7 @@ export async function getQuestionNearestNeighbors(questions: string[]) {
           distance: neighbor.distance,
         });
       }
-    });
+    }
 
     return {
       question: questions[index],
@@ -136,26 +143,29 @@ export async function getQuestionNearestNeighbors(questions: string[]) {
 export async function getSimilarAnswers(questions: string[]) {
   const nearestNeighbors = await getQuestionNearestNeighbors(questions);
 
-  const answers = nearestNeighbors?.map(async (questionData) => {
-    const neighbors = await Promise.all(questionData.neighbors.map(async (neighbor) => {
-      const knownAnswer = await Answer.getByQuestionHash(neighbor.hash);
+  const answers =
+    nearestNeighbors?.map(async (questionData) => {
+      const neighbors = await Promise.all(
+        questionData.neighbors.map(async (neighbor) => {
+          const knownAnswer = await Answer.getByQuestionHash(neighbor.hash);
 
-      if (knownAnswer) {
-        return {
-            question: knownAnswer.question,
-            answer: knownAnswer.answer,
-            distance: neighbor.distance,
-        }
-      }
-    }));
+          if (knownAnswer) {
+            return {
+              question: knownAnswer.question,
+              answer: knownAnswer.answer,
+              distance: neighbor.distance,
+            };
+          }
+        })
+      );
 
-    return {
+      return {
         question: questionData.question,
         neighbors: neighbors.filter((neighbor) => !!neighbor),
-    }
-  }) ?? [];
+      };
+    }) ?? [];
 
-  return await Promise.all(answers)
+  return await Promise.all(answers);
 }
 
 export function getQuestionsFromCsvs(files: string[]): {

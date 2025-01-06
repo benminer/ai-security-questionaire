@@ -194,13 +194,16 @@ api.post(
       return;
     }
 
-    if (!Array.isArray(req.body.questions) || !req.body.questions.every((q) => typeof q === "string")) {
+    if (
+      !Array.isArray(req.body.questions) ||
+      !req.body.questions.every((q: string) => typeof q === "string")
+    ) {
       res.status(400).send({ error: "Questions must be an array of strings" });
       return;
     }
 
     const questions = req.body.questions;
-    const similar = await getSimilarAnswers(questions)
+    const similar = await getSimilarAnswers(questions);
     res.status(200).send(similar);
   })
 );
