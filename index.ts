@@ -9,7 +9,7 @@ import {
 } from "./models/questionnaire";
 import { analyseData } from "./gemini";
 import { Answer } from "./models/answer";
-import { getQuestionNearestNeighbors } from "./vector-search";
+import { getSimilarAnswers } from "./vector-search";
 
 // enable event listeners
 Questionnaire.initListeners();
@@ -200,11 +200,8 @@ api.post(
     }
 
     const questions = req.body.questions;
-    const similarQuestions = await getQuestionNearestNeighbors(questions[0])
-
-    // TODO: look up known answers based on nearest neighbor hashes
-
-    res.status(200).send(similarQuestions);
+    const similar = await getSimilarAnswers(questions)
+    res.status(200).send(similar);
   })
 );
 

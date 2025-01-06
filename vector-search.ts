@@ -34,7 +34,7 @@ interface Prediction {
   };
 }
 
-async function getEmbeddings(
+export async function getEmbeddings(
   texts: string[],
   model = "text-embedding-005",
   task = "RETRIEVAL_QUERY",
@@ -46,8 +46,8 @@ async function getEmbeddings(
   const clientOptions = { apiEndpoint: apiEndpoint };
   const endpoint = `projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${model}`;
 
-  async function callPredict() {
-    const instances: aiplatform.protos.google.protobuf.IValue[] = texts.map(
+  async function callPredict(inputs: string[]) {
+    const instances: aiplatform.protos.google.protobuf.IValue[] = inputs.map(
       (e) => helpers.toValue({ content: e, task_type: task })
     ) as aiplatform.protos.google.protobuf.IValue[];
 
@@ -65,45 +65,103 @@ async function getEmbeddings(
       const embeddingsProto = p.structValue.fields.embeddings;
       const valuesProto = embeddingsProto.structValue.fields.values;
       const embedding = valuesProto.listValue.values.map((v) => v.numberValue);
+      const text = inputs[index];
       return {
-        id: Answer.hash(texts[index]),
-        question: texts[index],
+        id: Answer.hash(text),
         embedding: embedding,
+        question: text,
       };
     });
+
     return embeddings;
   }
 
-  return callPredict();
+  const result: { id: string; question: string; embedding: number[] }[] = [];
+
+  // Only 250 embeddings can be generated at a time
+  for (let offset = 0; offset < texts.length; offset += 250) {
+    const batch = texts.slice(offset, offset + 250);
+    const embeddings = await callPredict(batch);
+
+    if (embeddings.length) {
+      result.push(...embeddings);
+    }
+  }
+
+  return result;
 }
 
-// TODO: support batch, can probably pass multiple queries
-export async function getQuestionNearestNeighbors(query: string) {
-  const queryEmbeddings = await getEmbeddings([query]);
-  const queryEmbedding = queryEmbeddings[0].embedding;
-
+export async function getQuestionNearestNeighbors(questions: string[]) {
+  const embeddingsWithMetadata = await getEmbeddings(questions);
+  const embeddings = embeddingsWithMetadata.map((e) => e.embedding);
   const endpointClient = new aiplatform.v1.MatchServiceClient({
     apiEndpoint: API_ENDPOINT,
   });
 
+  const queries = embeddings.map((embedding) => ({
+    datapoint: {
+      featureVector: embedding,
+    },
+    neighborCount: 3,
+  }));
+
   const response = await endpointClient.findNeighbors({
     indexEndpoint: INDEX_ENDPOINT,
     deployedIndexId: DEPLOYED_INDEX_ID,
-    queries: [
-      {
-        datapoint: {
-          featureVector: queryEmbedding,
-        },
-        neighborCount: 3,
-      },
-    ],
+    queries,
     returnFullDatapoint: false,
   });
 
-  return response?.[0].nearestNeighbors?.[0].neighbors;
+  return response?.[0].nearestNeighbors?.map((neighborData, index) => {
+    const neighbors: { hash: string; distance: number }[] = [];
+
+    neighborData?.neighbors?.forEach((neighbor) => {
+      const datapoint = neighbor.datapoint?.datapointId;
+
+      if (datapoint != null && neighbor.distance != null) {
+        neighbors.push({
+          hash: datapoint,
+          distance: neighbor.distance,
+        });
+      }
+    });
+
+    return {
+      question: questions[index],
+      neighbors,
+    };
+  });
 }
 
-export function getQuestionsFromCsvs(files: string[]): { questions: string[]; answers: AnswerRow[] } {
+export async function getSimilarAnswers(questions: string[]) {
+  const nearestNeighbors = await getQuestionNearestNeighbors(questions);
+
+  const answers = nearestNeighbors?.map(async (questionData) => {
+    const neighbors = await Promise.all(questionData.neighbors.map(async (neighbor) => {
+      const knownAnswer = await Answer.getByQuestionHash(neighbor.hash);
+
+      if (knownAnswer) {
+        return {
+            question: knownAnswer.question,
+            answer: knownAnswer.answer,
+            distance: neighbor.distance,
+        }
+      }
+    }));
+
+    return {
+        question: questionData.question,
+        neighbors: neighbors.filter((neighbor) => !!neighbor),
+    }
+  }) ?? [];
+
+  return await Promise.all(answers)
+}
+
+export function getQuestionsFromCsvs(files: string[]): {
+  questions: string[];
+  answers: AnswerRow[];
+} {
   const questions: string[] = [];
   const answers: AnswerRow[] = [];
 
