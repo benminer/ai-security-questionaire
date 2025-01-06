@@ -105,6 +105,7 @@ api.post(
       return;
     }
 
+    await Questionnaire.approve(questionnaire.id);
     await Answer.approveForQuestionnaire(questionnaire.id);
     res.status(200).send({ success: true });
     return;
