@@ -21,7 +21,7 @@ export interface AnalyseDataRequest extends Request {
 export const extractQuestions = async (text: string) => {
   try {
     const result = await gemini.generateContent([
-      `${text}. Extract only the questions in a JSON format as an array of strings. Each question should be an element in the array. Ignore answers or other texts. Return only the JSON data`,
+      `${text}. Extract only the questions in a JSON format as an array of strings. Not all questions ended with a question mark. Each question should be an element in the array. Keep the questions in the same order from the text. Return only the JSON data`,
     ]);
     const resultText = result.response.text();
     const questions = JSON.parse(resultText.replace(/```(json)?/g, ""));
