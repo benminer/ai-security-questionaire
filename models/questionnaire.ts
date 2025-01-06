@@ -55,13 +55,6 @@ enum QuestionnaireQueryMap {
   Name = "label1",
 }
 
-interface QuestionnaireAnswer {
-  question: string;
-  answer: string;
-  id: string;
-  approved: boolean | undefined;
-}
-
 export class Questionnaire {
   static prefix = "questionnaire";
   static answerPrefix = "questionnaire.answer";
@@ -109,8 +102,16 @@ export class Questionnaire {
   }
 
   static initListeners() {
-    data.on(`created:${Questionnaire.prefix}:*`, Questionnaire.onCreated);
-    events.on(Questionnaire.processAnswersEvent, Questionnaire.onAnswerBatch);
+    data.on(
+      `created:${Questionnaire.prefix}:*`,
+      { timeout: 60000 * 5 },
+      Questionnaire.onCreated
+    );
+    events.on(
+      Questionnaire.processAnswersEvent,
+      { timeout: 60000 * 5 },
+      Questionnaire.onAnswerBatch
+    );
   }
 
   static async onAnswerBatch(event: {
