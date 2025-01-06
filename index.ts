@@ -18,7 +18,14 @@ Questionnaire.initListeners();
 const app = express();
 const api = Router();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      /http:\/\/localhost:[0-9]+/,
+      /^https:\/\/[\w-]+\.scope3-admin-staging\.pages\.dev$/,
+    ],
+  })
+);
 app.use(express.json());
 
 // Mount api to /api base route

@@ -1,8 +1,11 @@
 import { Answer } from "./models/answer";
-import { getQuestionNearestNeighbors, getQuestionsFromCsvs, getEmbeddings, getSimilarAnswers } from "./vector-search";
+import {
+  getQuestionNearestNeighbors,
+  getQuestionsFromCsvs,
+  getEmbeddings,
+  getSimilarAnswers,
+} from "./vector-search";
 import { writeFileSync, readFileSync } from "node:fs";
-
-
 
 // Generate data used to create the vector search index.
 // const questionData = getQuestionsFromCsvs(["rfi-question-source-clean.csv", "security-questions-v2-source-clean.csv"]);
@@ -21,5 +24,8 @@ import { writeFileSync, readFileSync } from "node:fs";
 
 // // Get nearest neighbors for a question.
 // const neighbors = await getQuestionNearestNeighbors(["Do you scan for vulnerabilities in the environment?", "Please provide documentation describing your Information Security Management Program (ISMP):"]);
-const neighbors = await getSimilarAnswers(["Have you completed a CDP Questionnaire?", "Are you certified?"])
+const neighbors = await getSimilarAnswers([
+  "Have you completed a CDP Questionnaire?",
+  "Are you certified?",
+]);
 console.log(JSON.stringify(neighbors));
