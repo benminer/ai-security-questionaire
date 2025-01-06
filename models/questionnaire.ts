@@ -79,6 +79,7 @@ export class Questionnaire {
   type: QuestionnaireType;
   customerType: CustomerType;
   approvedAt: number | undefined;
+  totalAnswersApproved: number = 0;
 
   constructor(params: QuestionnaireRow) {
     const {
@@ -240,12 +241,17 @@ export class Questionnaire {
   }
 
   static async get(id: string): Promise<Questionnaire | null> {
-    const questionnaire = await data.get<QuestionnaireRow>(
+    const dbQuestionnaire = await data.get<QuestionnaireRow>(
       `${Questionnaire.prefix}:${id}`
     );
 
-    if (questionnaire) {
-      return Questionnaire.fromRow(questionnaire);
+    if (dbQuestionnaire) {
+      const answers = await Answer.listByQuestionnaireId(id);
+      const questionnaire = Questionnaire.fromRow(dbQuestionnaire);
+
+      questionnaire.totalAnswersApproved = answers.filter((answer) => answer.approved).length;
+
+      return questionnaire;
     }
 
     return null;
