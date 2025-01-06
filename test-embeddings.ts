@@ -21,5 +21,5 @@ import { writeFileSync, readFileSync } from "node:fs";
 
 // // Get nearest neighbors for a question.
 // const neighbors = await getQuestionNearestNeighbors(["Do you scan for vulnerabilities in the environment?", "Please provide documentation describing your Information Security Management Program (ISMP):"]);
-const neighbors = await getSimilarAnswers(["Have you completed a CDP Questionnaire?"])
+const neighbors = await getSimilarAnswers(["Have you completed a CDP Questionnaire?", "Are you certified?"])
 console.log(JSON.stringify(neighbors));
