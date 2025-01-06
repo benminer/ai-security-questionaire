@@ -11,6 +11,8 @@
   "dependencies": {
     "@ampt/data": "^1.0.26",
     "@ampt/sdk": "^1.0.0",
+    "@google-cloud/aiplatform": "^3.34.0",
+    "@google-cloud/vertexai": "^1.9.2",
     "@google/generative-ai": "^0.21.0",
     "cors": "^2.8.5",
     "csv-parse": "^5.6.0",

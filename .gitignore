@@ -5,3 +5,5 @@ node_modules
 .ampt/
 .DS_Store
 google-credentials.json
+embeddings.json
+*.csv
