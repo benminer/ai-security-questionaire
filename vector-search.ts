@@ -6,212 +6,210 @@ import { Answer, type AnswerRow } from './models/answer'
 
 const API_ENDPOINT = '14814207.us-central1-506564556600.vdb.vertexai.goog'
 const INDEX_ENDPOINT =
-	'projects/506564556600/locations/us-central1/indexEndpoints/1296082316589793280'
+  'projects/506564556600/locations/us-central1/indexEndpoints/1296082316589793280'
 const DEPLOYED_INDEX_ID = 'ai_hackathon_security_ques_1735921282266'
 const PROJECT_ID = 'scope3-dev'
 const LOCATION = 'us-central1'
 
 const CREDENTIALS = JSON.parse(params('GOOGLE_CREDENTIALS_JSON'))
 interface Embedding {
-	id: string
-	question: string
-	embedding: number[]
+  id: string
+  question: string
+  embedding: number[]
 }
 
 interface Prediction {
-	structValue: {
-		fields: {
-			embeddings: {
-				structValue: {
-					fields: {
-						values: {
-							listValue: {
-								values: { numberValue: number }[]
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+  structValue: {
+    fields: {
+      embeddings: {
+        structValue: {
+          fields: {
+            values: {
+              listValue: {
+                values: { numberValue: number }[]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 export async function getEmbeddings(
-	texts: string[],
-	model = 'text-embedding-005',
-	task = 'RETRIEVAL_QUERY',
-	dimensionality = 0,
-	apiEndpoint = 'us-central1-aiplatform.googleapis.com',
+  texts: string[],
+  model = 'text-embedding-005',
+  task = 'RETRIEVAL_QUERY',
+  dimensionality = 0,
+  apiEndpoint = 'us-central1-aiplatform.googleapis.com'
 ): Promise<{ id: string; question: string; embedding: number[] }[]> {
-	const { PredictionServiceClient } = aiplatform.v1
-	const { helpers } = aiplatform
-	const clientOptions = {
-		apiEndpoint: apiEndpoint,
-		credentials: CREDENTIALS,
-	}
-	const endpoint = `projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${model}`
+  const { PredictionServiceClient } = aiplatform.v1
+  const { helpers } = aiplatform
+  const clientOptions = {
+    apiEndpoint: apiEndpoint,
+    credentials: CREDENTIALS
+  }
+  const endpoint = `projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/${model}`
 
-	async function callPredict(inputs: string[]) {
-		const instances: aiplatform.protos.google.protobuf.IValue[] = inputs.map(
-			(e) => helpers.toValue({ content: e, task_type: task }),
-		) as aiplatform.protos.google.protobuf.IValue[]
+  async function callPredict(inputs: string[]) {
+    const instances: aiplatform.protos.google.protobuf.IValue[] = inputs.map(
+      (e) => helpers.toValue({ content: e, task_type: task })
+    ) as aiplatform.protos.google.protobuf.IValue[]
 
-		const parameters = helpers.toValue(
-			dimensionality > 0 ? { outputDimensionality: dimensionality } : {},
-		)
-		const request = { endpoint, instances, parameters }
-		const client = new PredictionServiceClient(clientOptions)
-		const [response] = await client.predict(request)
-		const predictions = response.predictions
+    const parameters = helpers.toValue(
+      dimensionality > 0 ? { outputDimensionality: dimensionality } : {}
+    )
+    const request = { endpoint, instances, parameters }
+    const client = new PredictionServiceClient(clientOptions)
+    const [response] = await client.predict(request)
+    const predictions = response.predictions
 
-		const embeddings: Embedding[] = (
-			predictions as unknown as Prediction[]
-		).map((p, index) => {
-			const embeddingsProto = p.structValue.fields.embeddings
-			const valuesProto = embeddingsProto.structValue.fields.values
-			const embedding = valuesProto.listValue.values.map((v) => v.numberValue)
-			const text = inputs[index]
-			return {
-				id: Answer.hash(text),
-				embedding: embedding,
-				question: text,
-			}
-		})
+    const embeddings: Embedding[] = (
+      predictions as unknown as Prediction[]
+    ).map((p, index) => {
+      const embeddingsProto = p.structValue.fields.embeddings
+      const valuesProto = embeddingsProto.structValue.fields.values
+      const embedding = valuesProto.listValue.values.map((v) => v.numberValue)
+      const text = inputs[index]
+      return {
+        id: Answer.hash(text),
+        embedding: embedding,
+        question: text
+      }
+    })
 
-		return embeddings
-	}
+    return embeddings
+  }
 
-	const result: { id: string; question: string; embedding: number[] }[] = []
+  const result: { id: string; question: string; embedding: number[] }[] = []
 
-	// Only 250 embeddings can be generated at a time
-	for (let offset = 0; offset < texts.length; offset += 250) {
-		const batch = texts.slice(offset, offset + 250)
-		const embeddings = await callPredict(batch)
+  // Only 250 embeddings can be generated at a time
+  for (let offset = 0; offset < texts.length; offset += 250) {
+    const batch = texts.slice(offset, offset + 250)
+    const embeddings = await callPredict(batch)
 
-		if (embeddings.length) {
-			result.push(...embeddings)
-		}
-	}
+    if (embeddings.length) {
+      result.push(...embeddings)
+    }
+  }
 
-	return result
+  return result
 }
 
 export async function getQuestionNearestNeighbors(questions: string[]) {
-	const embeddingsWithMetadata = await getEmbeddings(questions)
-	const embeddings = embeddingsWithMetadata.map((e) => e.embedding)
-	const endpointClient = new aiplatform.v1.MatchServiceClient({
-		apiEndpoint: API_ENDPOINT,
-		credentials: CREDENTIALS,
-	})
+  const embeddingsWithMetadata = await getEmbeddings(questions)
+  const embeddings = embeddingsWithMetadata.map((e) => e.embedding)
+  const endpointClient = new aiplatform.v1.MatchServiceClient({
+    apiEndpoint: API_ENDPOINT,
+    credentials: CREDENTIALS
+  })
 
-	const queries = embeddings.map((embedding) => ({
-		datapoint: {
-			featureVector: embedding,
-		},
-		neighborCount: 3,
-	}))
+  const queries = embeddings.map((embedding) => ({
+    datapoint: {
+      featureVector: embedding
+    },
+    neighborCount: 3
+  }))
 
-	const response = await endpointClient.findNeighbors({
-		indexEndpoint: INDEX_ENDPOINT,
-		deployedIndexId: DEPLOYED_INDEX_ID,
-		queries,
-		returnFullDatapoint: false,
-	})
+  const response = await endpointClient.findNeighbors({
+    indexEndpoint: INDEX_ENDPOINT,
+    deployedIndexId: DEPLOYED_INDEX_ID,
+    queries,
+    returnFullDatapoint: false
+  })
 
-	return response?.[0].nearestNeighbors?.map((neighborData, index) => {
-		const neighbors: { hash: string; distance: number }[] = []
+  return response?.[0].nearestNeighbors?.map((neighborData, index) => {
+    const neighbors: { hash: string; distance: number }[] = []
 
-		for (const neighbor of neighborData?.neighbors ?? []) {
-			const datapoint = neighbor.datapoint?.datapointId
+    for (const neighbor of neighborData?.neighbors ?? []) {
+      const datapoint = neighbor.datapoint?.datapointId
 
-			if (datapoint != null && neighbor.distance != null) {
-				neighbors.push({
-					hash: datapoint,
-					distance: neighbor.distance,
-				})
-			}
-		}
+      if (datapoint != null && neighbor.distance != null) {
+        neighbors.push({
+          hash: datapoint,
+          distance: neighbor.distance
+        })
+      }
+    }
 
-		return {
-			question: questions[index],
-			neighbors,
-		}
-	})
+    return {
+      question: questions[index],
+      neighbors
+    }
+  })
 }
 
 export async function getSimilarAnswers(questions: string[]) {
-	const nearestNeighbors = await getQuestionNearestNeighbors(questions)
+  const nearestNeighbors = await getQuestionNearestNeighbors(questions)
 
-	const answers =
-		nearestNeighbors?.map(async (questionData) => {
-			const neighbors = await Promise.all(
-				questionData.neighbors.map(async (neighbor) => {
-					const knownAnswer = await Answer.getByQuestionHash(neighbor.hash)
+  const answers =
+    nearestNeighbors?.map(async (questionData) => {
+      const neighbors = await Promise.all(
+        questionData.neighbors.map(async (neighbor) => {
+          const knownAnswer = await Answer.getByQuestionHash(neighbor.hash)
 
-					if (knownAnswer) {
-						return {
-							question: knownAnswer.question,
-							answer: knownAnswer.answer,
-							distance: neighbor.distance,
-						}
-					}
-				}),
-			)
+          if (knownAnswer) {
+            return {
+              question: knownAnswer.question,
+              answer: knownAnswer.answer,
+              distance: neighbor.distance
+            }
+          }
+        })
+      )
 
-			return {
-				question: questionData.question,
-				neighbors: neighbors.filter((neighbor) => !!neighbor),
-			}
-		}) ?? []
+      return {
+        question: questionData.question,
+        neighbors: neighbors.filter((neighbor) => !!neighbor)
+      }
+    }) ?? []
 
-	return await Promise.all(answers)
+  return await Promise.all(answers)
 }
 
 export function getQuestionsFromCsvs(files: string[]): {
-	questions: string[]
-	answers: AnswerRow[]
+  questions: string[]
+  answers: AnswerRow[]
 } {
-	const questions: string[] = []
-	const answers: AnswerRow[] = []
+  const questions: string[] = []
+  const answers: AnswerRow[] = []
 
-	for (const file of files) {
-		const fileData = readFileSync(file, 'utf-8')
-		const records = parse(fileData, {
-			columns: true,
-			skip_empty_lines: true,
-			record_delimiter: [],
-		})
+  for (const file of files) {
+    const fileData = readFileSync(file, 'utf-8')
+    const records = parse(fileData, {
+      columns: true,
+      skip_empty_lines: true,
+      record_delimiter: []
+    })
 
-		if (records.length) {
-			// Only include questions that are not empty + whose answers are not empty
-			const validQuestions = records.filter(
-				(record: { Question: string; Answer: string }) =>
-					!!record.Question &&
-					!!record.Answer &&
-					record.Question.length > 0 &&
-					record.Answer.length > 0,
-			)
+    if (records.length) {
+      // Only include questions that are not empty + whose answers are not empty
+      const validQuestions = records.filter(
+        (record: { Question: string; Answer: string }) =>
+          !!record.Question &&
+          !!record.Answer &&
+          record.Question.length > 0 &&
+          record.Answer.length > 0
+      )
 
-			questions.push(
-				...validQuestions.map(
-					(record: { Question: string }) => record.Question,
-				),
-			)
+      questions.push(
+        ...validQuestions.map((record: { Question: string }) => record.Question)
+      )
 
-			answers.push(
-				...validQuestions.map(
-					(record: { Question: string; Answer: string }) => ({
-						question: record.Question,
-						answer: record.Answer,
-						id: Answer.hash(record.Answer),
-					}),
-				),
-			)
-		}
-	}
+      answers.push(
+        ...validQuestions.map(
+          (record: { Question: string; Answer: string }) => ({
+            question: record.Question,
+            answer: record.Answer,
+            id: Answer.hash(record.Answer)
+          })
+        )
+      )
+    }
+  }
 
-	return {
-		questions,
-		answers,
-	}
+  return {
+    questions,
+    answers
+  }
 }

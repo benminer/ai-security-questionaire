@@ -1,8 +1,8 @@
 import {
-	getEmbeddings,
-	getQuestionNearestNeighbors,
-	getQuestionsFromCsvs,
-	getSimilarAnswers
+  getEmbeddings,
+  getQuestionNearestNeighbors,
+  getQuestionsFromCsvs,
+  getSimilarAnswers
 } from '@vector-search'
 
 // Generate data used to create the vector search index.
@@ -23,7 +23,7 @@ import {
 // // Get nearest neighbors for a question.
 // const neighbors = await getQuestionNearestNeighbors(["Do you scan for vulnerabilities in the environment?", "Please provide documentation describing your Information Security Management Program (ISMP):"]);
 const neighbors = await getSimilarAnswers([
-	'Have you completed a CDP Questionnaire?',
-	'Are you certified?'
+  'Have you completed a CDP Questionnaire?',
+  'Are you certified?'
 ])
 console.log(JSON.stringify(neighbors))
