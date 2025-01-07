@@ -125,13 +125,11 @@ export class Questionnaire {
     const questionnaire = await Questionnaire.get(id)
     if (questionnaire && questionnaire.state === QuestionnaireState.ANSWERING) {
       try {
-        console.log({ batch, batchLength: batch.length }, 'onAnswerBatch')
         const answers = await answerQuestionBatch({
           questions: batch,
           type: questionnaire.type,
           customerType: questionnaire.customerType
         })
-        console.log({ answers }, 'answers')
         await Answer.batchCreate({
           questionnaireId: questionnaire.id,
           answers

@@ -6,4 +6,3 @@ node_modules
 .DS_Store
 google-credentials.json
 embeddings.json
-*.csv

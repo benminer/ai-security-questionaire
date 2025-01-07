@@ -1,0 +1,473 @@
+Have the supplier's assets undergone a risk analysis?,No
+Are the supplier's assets classified according to their sensitivity level?,No
+"Is the IAM policy for assets defined, ensuring individual accounts without sharing and avoiding generic accounts, with annual access rights reviews? ",Yes
+"Has the supplier developed policies and procedures to provide rapid and effective responses to security incidents, including defining the means of communicating security incidents to AVIV and the required level of security for this communication?",Yes
+Does the supplier have a security incident management process in place?,Yes
+"Is there a joiner/leaver process clearly defined and enforced end-to-end by all departments, including during changes in an employee's position and are access rights granted and withdrawn in accordance with this process?",Yes
+"Has the supplier documented a BCP/DRP procedure and exercises to test this procedures ? (if yes, how often?)","Yes to plan, no to exercises"
+"Are all of the supplier's assets, including workstation, protected by up-to-date antivirus software with virus signatures updated at least weekly?",Yes
+Does the supplier's infrastructure contain obsolete software components or unsupported operating systems?,No
+Is there an automatic vulnerability scanning mechanism in place for the supplier's infrastructure?,Yes
+"Does the supplier patch any asset, including its operating system and middleware, in less than a week after the publication of a critical flaw (CVSS of 9 or more)?",Yes
+"Can the supplier provide AVIV, upon request, with a list of its subcontractors directly or indirectly involved in the provided service?",Yes
+Does the supplier have a documented process for deleting AVIV's or AVIV customers' PII in its possession?,We do not collect PII other than for the purposes of AVIV account creation and access. This user data and all AVIV data can be purged.
+"Does the solution include features to ""hide"" sensitive data from specific users based on their authorization or profile? ",Yes
+Does it have mechanisms to prevent authenticated users from massively downloading sensitive data if their authorization does not permit it?,Yes
+"Is access to the supplier's premises only possible through a secure identification mechanism, and entry/exit records maintained for employees as permitted by regulations?",Yes
+Are specific access rights required for sensitive areas containing critical assets of the supplier?,Yes
+Does the supplier's solution allow AVIV to autonomously create and delete user accounts?,"Yes, first account is created by Scope3, additional access is granted by AVIV"
+"Does the solution support AVIV users' authentication via SAMLv2 and/or OpenID Connect, and if yes, is this feature standard or additional?","Yes, SAML, Free"
+Is AVIV users' account provisioning automated via this federation?,No 
+"Are assets regularly backed up, and are these backups stored in separate physical and logical areas from the assets being backed up?",Yes
+"Is sensitive data stored encrypted, using a mechanism that aligns with established encryption industry best practices?",Yes
+"Are any non-production assets, like those used for development or testing, accessible on the internet and are only essential production assets exposed, limiting access to necessary services and avoiding direct exposure of management services or databases on the internet? ",Yes
+Does the supplier separates its production and non-production environments logically or phisically?,Logically
+"Does the supplier ensure that no production data is used for testing purposes, and if it is used in non-production environments, is it fully anonymized?",Yes
+Do the encryption key characteristics adhere to recommended industry standards for secure encryption?,Yes
+"Are properly managed workstations provided to each employee of the supplier, with encrypted storage for both workstations and mobile equipment ?",Yes
+Are all communications both within the supplier's infrastructure and between the supplier and AVIV encrypted?,Yes
+Are all encryption or signature certificates generated either by a centralized PKI or a specialized supplier? ,Yes
+"Does the supplier implement system hardening best practices or frameworks? If so, which one(s)?","Yes, security by design; privacy by design. RBAC, MDM, Secure development policy. We also benefit from the industry leading security controls and features of our primary cloud provider GCP."
+Is network access controlled to prevent unauthorized access?,Yes
+Is the supplier's application infrastructure exposed to the Internet protected by a WAF?,Yes
+Are there IDS positioned at the supplier's network critical points?,Yes
+Does the supplier have a SIEM?,Yes
+Are administrators' rights reviewed at least once a year?,Yes
+"Do employees have administrator rights on their workstations, except when a duly validated and justified exception is made and recorded?",Yes
+Are user service passwords stored in hashed form and salted before hashing?,Yes
+"Are secrets, especially passwords and keys, provided by AVIV securely stored and inaccessible to any employee of the service supplier?",Yes
+"If the supplier utilizes an internal PKI, is it installed on a dedicated and isolated network, with the root certificate authority offline when not generating an intermediate certificate?",Not Applicable
+"Does the supplier ensure that security incidents are promptly communicated to AVIV with recommendations to limit their impact, and require employees and subcontractors to report any actual or suspected incidents?",Yes
+"Has the supplier established and documented a crisis management procedure covering crisis initiation, deployment of the crisis unit, roles of involved parties, and the execution of the crisis management process?",Yes
+"Is the simulation of response to a ransomware attack carried out on a regular basis, and if yes, how often?",No
+Does the supplier provide AVIV with the necessary elements to contact it in the event of a BCP being triggered?,Yes
+Does the supplier log all connections made to its assets and record the actions performed? ,Yes
+Are audit logs stored outside the respective machine or system?,Yes
+Does the supplier conduct source code analysis using a SAST system or has an alert mechanism for vulnerabilities in external libraries?,Yes
+"Are penetration tests performed on the supplier's system on a regular basis by a third party, and if yes, how often?",Yes
+Has an external audit been carried out by an external firm in the last 3 years?,"No, first SOC2 audit targeted for Q1 2025"
+"Does the solution provide a mechanism for the AVIV security team to access audit trails, including user logins, timestamps, and actions performed?",Yes
+Is every action by an AVIV user on the supplier's solution traced?,Yes
+Do you have a member of your organization with dedicated information security duties?  ,Yes
+Does the organization have written information security policies?,Yes
+"Do your employment agreements contain confidentiality requirements, including non-disclosure and prohibitions on unauthorized use of data?",Yes
+How often does your staff receive information security awareness training?,"New hire training will begin this quarter, reminders are sent to staff regularly, and as the current threat landscape dictates"
+What security measures does your organization have in place for data protection?,"This is very open ended, please ask a specific question, else see answer to 12."
+Does your company have a Data Protection Officer?  Provide contact details.,No
+Is your service in compliance with the GDPR?  Is your service in compliance with the CCPA?  ,Yes
+Will you be using any personnel outside of the United States to provide Services to Celtra?,"Yes, We are a global organization and are hiring rapidly. Any list we provide would be out of date within 30 days."
+Will you be using any sub-processors to perform services for Celtra?,No
+Are your sub-processors contractually bound to the data protection requirements in place in your contract with Celtra?,N/A
+Has your company had any data security breaches in the past five years?,No
+Do you have policies and processes in place to ensure that suspected data breaches and security incidents are immediately reported to Celtra?,"Yes, Starting with procedures, we complete vulnerability scans, have begun annual penetration tests, and generally leverage the security settings, logging, and monitoring provided to us by our cloud platform, GCP. We have appropriate use, cryptographic policies, secure development policies in the final stages of approval that govern our employee behavior. We have also recently begun an engagement with Vanta to help us prepare for a SOC2 audit. We use a robust incident management plan designed to consistently guide our response to incidents at all severitly levels (security or otherwise). In addition, our customer contracts typically contain language that would cover the specifics around the timing of data breaches and security incidents notifications sent to Celtra."
+"Does your organization have any security certifications (ISO 27001, SOC2, etc.)?","No, we are recently under contract with Vanta and have begun our SOC2 Type II readiness project."
+Does your company limit access to Celtra data from non-approved devices?,"No, Access to Celtra data through the Web UI is available cross device by design. From a backend access perspective, Scope3 access is role based and follows least priviledge. We do not technically limit device connecting to company resources at this time, however BYOD devices (beyond mobile phones accessing M365 and business documentation) are prohibited from accessing company resources by employee policies."
+Does your company limit access to Celtra data to individuals who need it (Principle of Least Privilege)?,Yes
+Do you support Google SSO/SAML for customer access?,Yes
+Do you have an updated data processing agreement form that incorporates the new Standard Contractual Clauses following the EU Commission Decision in June 2021?,N/A
+Name of Vendor Product,Scope3
+"Is the system containing Yahoo data running on a cloud service? In the comments, please indicate what service model and/or deployment model is provided.","Yes,Google Cloud Platform"
+"Does the vendor conduct, or have a third party conduct, a controls assessment/audit on the solution potentially being provided to Yahoo to ensure the product meets industry standards for cloud security? ","Yes, external penetration test underway, external vulnerability scan, in the process of preparing for SOC2 audit using Vanta."
+"If the vendor is providing the ability to set up separate accounts for different Yahoo business units, will there be a client management portal which allows distributed business accounts (business units/departments) to be managed under a single central corporate account?",No
+If Yahoo data will be housed in a resource pooled environment are there controls in place to prevent one client from attempting to compromise another client? ,"Yes, through application code"
+Does the vendor have a data classification and retention policy that identifies data types that require additional security controls and governance?,"No, we do not have disparate retention policies for customer data. It should be said that we also do not collect or require personal data, PII, or credit card information (using your examples). We have what advertising related data that Yahoo chooses to share with us strictly for the purposes of providing the service."
+Will Yahoo data hosted on the vendor system be stored in an encrypted state (encryption at rest)? ,Yes
+Is the encryption algorithm used for encryption at rest compliant with NIST standards? ,Yes
+Will Yahoo have the ability to manage and provide their own encryption key and/or tools or will the vendor use separate encryption keys per client account?,No
+How often will the vendor rotate the encryption key (or allow Yahoo to rotate the encryption key)? ,Not Applicable
+Does the vendor limit access to the encryption key(s) used on Yahoo data to only those with a specific job function to handle and manage the key(s)? ,"Yes, access is role based and on the concept of least privilidge. we leverage GCP and the tooling provide therein."
+"Are vendor employees or contractors able to access Yahoo data in an unencrypted state, either while in transit, processing or in storage?",No
+Will Yahoo data be encrypted in transit to or within the vendor's systems? ,"Yes, We leverage Google's storage transfer service between cloud buckets at Google, AWS, Azure, which supports TLS 1.3. See documentation here:  https://cloud.google.com/storage-transfer/docs/overview"
+Will the encryption algorithm used for encryption in transit be compliant with NIST standards? ,Yes
+"Will the vendor require a direct connection to pull, read, or otherwise directly access networks or data from Yahoo networks?","No, Most likely, Yahoo will push data to Scope3, not the other way around. The exact technical means is product and integration specific, Scope3 customers often push data into an AWS bucket, permissions controlled by the customer. Please see our detailed documentation here: https://docs.scope3.com/docs/cloud-bucket-configuration"
+"Are there documented policies, procedures, and controls to limit access based on need to know or minimum necessary for its employees, agents, contractors (or others as applicable)? ","Yes, access is role based and on the concept of least privilidge. we leverage GCP and the tooling provide therein."
+Are vendor employees and contractors technically prevented from accessing Yahoo data on non vendor-managed devices? ,"No, our vendor managed employees with a role based need to access the data can access it via the same processes and under the same policies as our FTEs"
+"Is multi-factor (MFA) authentication, including two-factor (2FA), required for employee/contractor remote access?","Yes, M365 SSO + Microsoft Authenticator app on Mobile device. In app alert displays a number to be confirmed and user authenicated by either phone unlock pin or biometric verification."
+Are employees technically prohibited from accessing production systems remotely (directly from the internet)? ,No
+Does the vendor have documented information security program policies which will apply to the protection of Yahoo systems and/or data? ,"Scope3 is a young company and we are in the process of readying our organization for our first SOC2 audit. As such we are in the process of documenting and/or socializing policy, process, and procedures. We have the following policies in place: Change Mangement, Incident Management, Business continuity, Cryptography,Asset Managment + Disposal . We are in the process of finalizing: Secure Development, Data Management, 3rd Party Management."
+Does the vendor require that all user workstations/devices have up-to-date end-point security? ,We use sentinel one on our laptops for endpoint security. The devices are managed in an MDM (Rippling MDM for Macs and Intune for PCs) and our policies are enforced using those tools
+"Do vendor employees actively maintain firewalls or other network traffic controls (E.g.. Network Access Control Lists, AWS Security Groups) for either internal and external network connections on systems containing Yahoo data?",Yes. Scope3 is a fully remote organization and do not have a proprietary network or the concept of priviliged access in any one location. We have no offices elevated access or managed data centers with hardware we manage. We rely fully on our SAAS providers  and their maintenance and upgrade schedules. Inside GCP we rely on role based access control/groups to limit access to those with a specific need (developers).
+Will Yahoo systems or data be exposed to external network connections including connections to or from Yahoo? This includes exposure to the internet. ,"No, please see documentation here for integration specifici detailes. https://docs.scope3.com/docs/getting-started"
+"Will additional third parties, including third party data centers, have access to Yahoo systems and/or data?","Yes, We leverage GCP, and when requested by clients can use Azure or AWS buckets for data transfer. Based on the wording of your Guidance to include 3rd party data centers, said providers have physical access to the physical hardware that hosts the virtualized instances and thus the answer is yes."
+Does vendor perform active information security monitoring on the systems that will contain Yahoo data? ,"No, We are a small team and do not have a dedicated NOC or Networking team at this time. We leverage GCP, Google's Security Command Center, Microsoft Defender and rely on industry best practice settings to secure our environments. We log activities and periodically review"
+"Does the vendor perform, or have a third party perform, vulnerability scanning on internal and external systems that will have Yahoo systems and/or data?","Yes, external penetration and vulnerability scans are completed annually. "
+Does the vendor or the third party use automated or manual penetration testing? ,"Yes, we do manual, Psicurity is the 3rd party security vendor"
+Does the vendor have a Service Level Agreement for the service provided to Yahoo?,"no, but this can be negotiated in contract"
+Does the vendor have a formal process to ensure Yahoo is notified prior to changes being made which may impact the service? ,"yes via release notes, customer communications and account teams"
+"Does any third party (e.g. suppliers, subcontractors, or subprocessors) have direct access to your company systems or data?","Yes. Contract engineers are under contract, NDA, confidentiality agreements, and are held to the same standards, policies and processes as FTE employees."
+"Does your Information Security policy contain an Asset Management, or equivalent, policy?",yes
+"Has your company created secure areas to protect critical assets, components, and workspaces?","we have no physical presence, offices or data center"
+Do your secure areas use physical entry controls to restrict access to authorized individuals?*,"we have no physical presence, offices or data center"
+"Does your company require access controls on all applications, operating systems, databases, and network devices?",yes
+Does your company have controls in place to ensure access is granted based on a need-to-know basis?,yes
+Does your company have controls in place to ensure access is granted based on principles of least privilege?,yes
+Does your company have controls in place to ensure access is granted based on role and scope?,yes
+Does your company have controls in place to annually review and update access privileges?,yes
+Does your company have controls in place to ensure a separation of duty between those who request access and those who approve access?,yes
+Do you include third parties in your incident response training?,yes
+Does your company periodically test your incident response procedures with all responsible parties?,yes
+"Does your company have a process for customers to view relevant incident details (e.g. access logs, security events, alerts)? If yes, describe how","Yes, On a request basis, as defined in the contract between client and Scope3"
+"Does your company have an Information Security, or equivalent, policy?*",Yes
+Describe all of the topics covered by the Information Security Policy,"Access and Identity Management, Asset Management, Backup Management, Confidentiality, Device Management, Disaster Recovery, Encryption, Enterprise Security, Human Resources, Information Sensitivity, Media Destruction, Network Security, Password Management, Patch Management, Software Management, Third Party Management, User Account Management, Wireless Communication"
+"For this group of products/services, does your company handle or otherwise process any type of customer data (e.g. Personally Identifiable Information (PII), employee, customer, partner, etc.) for purposes other than account management or billing?",No
+"Does your company log, monitor, and record information and events generated by company networks, systems, applications, and hardware?",yes
+How long are logs retained?,"varies by system, minimum of 30 days"
+"Does your Information Security policy contain an Asset Management, or equivalent, policy?",yes
+"Does your Information Security policy contain a Network Security, or equivalent, policy?",yes
+"Does your Information Security policy contain an Encryption, or equivalent, policy?",yes
+"For remote working/connections, does your Organization use a Virtual Private Network(VPN) to encrypt and channel all remote traffic that contains InMobi/Glance data through your Organization's office network, and mandate multifactor authentication for remote access to its production environment/data?","No to VPN, yes to MFA"
+"Are applications and source code processing Customer data scanned for vulnerabilities prior to their releases, covering OWASP top10 vulnerabilities (e.g. SQL injection, XSS, XSRF, etc.)?",We complete vulnerability scans twice yearly
+"Does your Organization install security patches for systems, networks, and software within documented timelines that's proportionate to the CVE score of the vulnerability, as well as retiring ""end of life"" products?",Yes
+Does your Organization support Single Sign On (SSO) for Customer's authentication to your Organization's application? (Applicable only if you provide a web application as part of your service),"Yes, Saml integration. This is available free of charge"
+4.3 Do you have written security polices? (Single selection allowed) *,Yes
+4.4 Are they reviewed and updated as needed at least annually? (Single selection allowed) *,Yes
+4.5 Will the data retention and acceptable usage of Customer’s data be defined in the MSA? (Single selection allowed) *,Yes
+4.6 Please describe why this is not or will not be in the MSA *,We cannot predict what if any edits or additions will be made to the MSA.
+"4.7 Do you have mandatory, annual, cyber security awareness training for all employees? (Single selection allowed) *",No
+4.8 Please explain why you do not have cyber security awareness training *,"We are a rapidly growing startup. We have just begun our preparations for SOCII compliance but we are by no means there yet. We do not have an official security training program in place yet but we do have regular, at least quarterly posts made to the entire company from our IT organization. In addition we have timely posts related to risks, attack vectors on an as needed basis. One might argue that more frequent postings are better than a brief annual training. Annual training is on the roadmap for the next 12 months as resources permit"
+4.9 Do you have an internal team dedicated to Information Security tasks? (Single selection allowed),Yes
+"5.1 Do you outsource, offshore, subcontract, or delegate any of your duties, responsibilities or obligations assigned by Customer to any third parties? (Single selection allowed) *",Yes
+"5.2 Explain if Customer has/will be notified of the arrangement, what information is provided to the provider, and what work is being done. *",We have several contract based members of our engineering organization working hand in hand with the rest of the technology organization. They are held to the same secure software development standards and policies that our in house employees are. They are subject to the same code reviews etc.
+"5.3 List the providers’ names, geographical locations and your processes for monitoring and enforcing compliance and notification.  *","RTB Analytica - Global, Exadel - Global"
+5.4 Is Customer data shared with or transmitted to other vendors? (Single selection allowed) *,No
+5.5 List the vendors here with a description of what data they receive and why. *,NA
+5.6 Does the data retention practices of these vendors mirror your data retention practices?   (Single selection allowed) *,Yes
+5.7 Please describe the differences. *,NA
+"5.8 When you share or transmit Customer data to other vendors, who has legal responsibility to protect the data? *",NA
+5.9 Do you outsource any security management functionality?  (Single selection allowed) *,Yes
+5.10 Please describe what is outsourced and to whom. *,"We are built in Google Cloud Platform and rely on their tooling, including security offerings. The Uis are accessed and managed by Scope3 employees"
+6.1 Where will the application or Customer's data be hosted? (Single selection allowed) (Allows other) *,Cloud Provider
+6.2 Please describe how you audit who has physical access to the environment where Customer data is stored. *,"We operate on the concept of least priviledge. We are also a rapidly growing startup, but do not have full role independence that you might expect from a fully scaled organization. Access is granted on an as needed basis, is revoked upon role change and is audited regularly at least annually, in practice closer to quarterly)"
+6.3 Who is the 3rd party that owns/manages this data center? *,Google
+6.4 Who is the Cloud Provider? (Multiple selections allowed) (Allows other) *,"GCP, and to a lesser extent AWS and Azure when requested by the client for data bucket transfers"
+6.5 Do you utilize data centers (or cloud providers) outside the United States? (Single selection allowed) *,No
+6.6 What cities/countries are these data centers or cloud providers located in? *,Midwest/Central United States. 
+6.7 Are there security measures in place to prevent logical access to systems / containers by employees of the cloud providers? (Single selection allowed) *,Yes
+"6.8 Are all locations secured by security guards 24 hours a day, 7 days a week? (Single selection allowed) *",Yes
+6.9 Please describe the security guard hours of operation for each site. *,https://www.google.com/about/datacenters/data-security/
+"6.10 If no security guards are present, how is each site physically secured? *",https://www.google.com/about/datacenters/data-security/
+"6.11 Are vendors, visitors, family members or maintenance personnel allowed access to these locations?  (Single selection allowed) *",https://www.google.com/about/datacenters/data-security/
+6.12 Are they escorted at all times? (Single selection allowed) *,https://www.google.com/about/datacenters/data-security/
+6.13 Please describe how access is controlled. *,https://www.google.com/about/datacenters/data-security/
+7.1 Do you employ firewalls to protect your network? (Single selection allowed) *,No
+7.7 Do you scan for vulnerabilities in the environment? (Single selection allowed) *,Yes
+7.8 Please describe what is scanned and how *,External Vulerabilty Scans (automated) and annual Penetration Testing (human based) currently with a partner Psicurity
+"7.9 Do you have a formal change management process for any pertinent changes where changes are reviewed, tested, approved, and documented?  (Single selection allowed) *",Yes
+8.1 Are all critical/high security patches applied within 30 days in your environment? (Single selection allowed) *,Yes
+8.2 What is your timeframe for applying these critical/high patches? *,Google is responsible for security patching of the environment - https://cloud.google.com/kubernetes-engine/enterprise/docs/concepts/security-patching
+8.3 Do you have a procedure to keep track of announcement of vulnerability patches for your networking devices? (Single selection allowed) *,No
+8.5 Are all your networking devices at the latest patch level? (Single selection allowed) *,Yes
+8.6 Please describe why they are not. *,NA
+9.1 Do you restrict access to the Desktop/Laptop systems? (Single selection allowed) *,No
+9.5 Are USB Drives or other portable media encrypted? (Single selection allowed) *,No
+9.6 What enforces this encryption? *,NA
+9.7 Why are these not encrypted? *,We do not provide external devices to be used for company purposes but admit that an unencrypted device could be used and connected. Hence the no answer to the question above
+9.8 Do you scan email for viruses? (Single selection allowed) *,Yes
+9.10 Is there explicit policy requiring anti-virus software on networked computers?  (Single selection allowed) *,Yes
+9.11 Please describe the policy. *,We have a robust information security and appropriate use policy
+9.13 Do you allow installation of personal and non-corporate approved software on network computers? (Single selection allowed) *,Yes
+"9.15 Are your users prevented from disabling anti-virus software on End User Devices (Desktops, Laptops, Tablets, Smartphones)?   (Single selection allowed) *",Yes
+9.16 Please explain what technical controls prevent the uninstalling of Antivirus software,All laptops are enrolled in an MDM and SentinelOne is enforced per policy on all Macs. Our windows endpoints are enrolled in Intune and leverage Microsoft Defender.
+"10.1 Do you enforce separation of duties with respect to system development, database administration, and system administration?   (Single selection allowed) *",No
+10.3 Are your development and test environments separate from production? (Single selection allowed) *,Yes
+10.5 Do you require two-factor authentication for systems that contain sensitive information? (Single selection allowed) *,Yes
+10.8 What roles require this and what are the mechanisms used for authentication? *,"administrator level access, several GCP groups with elevate permissions"
+10.9 Are there any conditions where developers and contractors (including vendor hardware service personnel) permitted to have access to production systems ? (Single selection allowed) *,Yes
+10.10 Please describe for what reasons or situations. *,We have several contract based members of our engineering organization working hand in hand with the rest of the technology organization. They are held to the same secure software development standards and policies that our in house employees are. 
+10.11 Do you have intrusion detection or prevention systems (IDS/IPS)? (Single selection allowed) *,Yes
+10.12 Please describe which intrusion prevention/detection systems are implemented. *,We leverage Google Command Center and its security and logging tooling.
+10.13 Can this system analyze encrypted data? (Single selection allowed) *,No
+10.14 Do you have a Data Loss Prevention System? (Single selection allowed) *,No
+"10.17 Do individuals with high level of access (i.e. system admins, DBAs, etc.) use two-factor to authenticate to systems that they manage? (Single selection allowed) *",Yes
+10.18 Please describe the two-factor solution used. *,SSO + MFA via Microsoft Authenticator App on Mobile Device prompting mobile verification (pin/biometric) and then a code verification to authorize the session in browser
+11.1 What type of information is collected in system logs? (Multiple selections allowed) (Allows other) *,standard logging is enabled in GCP
+11.2 How long is this information retained? *,30 days
+11.3 How is this information reviewed and at what interval? *,It is reviewed on an as needed basis
+11.4 Is this information stored in a SIEM product and correlated with other system events? (Single selection allowed) *,No
+"11.6 Do you have dedicated Audit, Compliance and Risk Management personnel which audit policies, procedures and the review process? (Single selection allowed) *",No
+11.7 Please describe the team or individual. *,This is currently and for the next 12 months a shared responsibility between the head of IT and the CTO
+12.1 Is a Computer Security Incident Response Team (CSIRT) in place? (Single selection allowed) *,Yes
+12.2 Describe the procedures in place for responding to security incidents. *,We have a robust incident response policy and plan.
+12.3 What is the frequency for validating your incident response plan? *,The intention is to validate annually but the formalized policy is a more recent addition..
+12.4 Do you have personnel that are responsible for Business Continuity Planning?   (Single selection allowed) *,Yes
+12.5 Please describe the team or individual. *,"This is currently and for the next 12 months a shared responsibility between the head of IT and the CTO, and other senior leadership at Scope3"
+12.6 Do you have an oversight program to ensure the quality of your business continuity plans?  (Single selection allowed) *,No
+12.7 Describe the oversight program including the plan review process. *,Wedo not have a formalized oversight program at this time
+12.8 Do all business departments that provide critical services or products to Customer have documented business recovery plans? (Single selection allowed) *,No
+12.9 Does your IT organization have recovery plans for critical technology supporting Customer? (Single selection allowed) *,Yes
+12.10 Have the critical system(s) you support for Customer been successfully tested to recover within the committed Recovery Time Objective (RTO)? (Single selection allowed) *,Yes
+12.11 What is the process for monitoring integrity and availability of the hosts? *,internal and external monitoring across multiple possible failure points
+"12.12 In the event of an incident or service failure, are clients, vendors & services prioritized?  (Single selection allowed) *",Yes
+12.13 Please describe the prioritization process *,ranked list 
+12.14 Do you test your Business Continuity Plans (BCP)? (Single selection allowed) *,No
+"12.15 Describe the testing process, including the frequency of all disaster recovery and business continuity tests. *",we have not yet instituted a formalized testing schedule for DR/BCP.
+"13.1 Are there processes in place to respond to customer requests for data transparency as well as data removal from all internal systems, if said request is received, either directly from the customer or from Customer?  (Single selection allowed) *",Yes
+13.3 Please describe the process. *,"Upon termination of agreement, and in accordance with the terms negotiated in the contract this request can be made and honored. "
+13.5 Do you have a response team to address privacy incidents and data breaches?    (Single selection allowed) *,Yes
+13.6 Please describe this team or individual. *,"We have an clear and defined incident management policy which in turn defines the players and their responsibilities. In a case like a security incident or data breach, we anticipate this to be an all hands on deck situation.  "
+13.7 Is there a formal process or policy to prepare for and for rectifying data breaches?    (Single selection allowed) *,No
+13.8 Please describe the process or policy. *,"Scope3 is a young company and we are in the process of readying our organization for our first SOC2 audit. As such we are in the process of documenting and/or socializing policy, process, and procedures. We have the following policies in place: Change Mangement, Incident Management, Business continuity, Cryptography,Asset Managment + Disposal . We are in the process of finalizing: Secure Development, Data Management, 3rd Party Management."
+"13.9 Will Customer be notified of all privacy related problems and incidents (e.g., privacy data breach, unauthorized access) involving and/or impacting Customer? (Single selection allowed) *",Yes
+13.12 What is the timeframe for notifying Customer? (Single selection allowed) (Allows other),48-72 Hours
+14.1 What methods are used to exchange files or data? (Multiple selections allowed) (Allows other) *,"API and Secure Data Tranfer via Data Bucket integrations in the major cloud providers (Google, Amazon, Microsoft)"
+14.2 What protects this data in flight? *,encryption
+14.3 What type of network connection is used to transmit data to or from Customer?  *,secure cloud data transmission via Google Secure Transfer Service
+14.4 What is the minimum or lowest version of TLS that you allow? (Single selection allowed) *,1
+15.1 Is Customer’s data encrypted at rest in your environment?  (Single selection allowed) *,Yes
+"15.2 What encryption method (e.g. 3DES, AES, RSA) is used and what key length is used *",AES 256 - https://cloud.google.com/docs/security/encryption/default-encryption
+15.4 When confidential data is hashed is the SHA2 algorithm used to generate that hash and are these hashes properly salted?   (Single selection allowed) *,Yes
+15.6 What encryption algorithms are used to encrypt data in flight to/from the internet ? *,"We leverage Google's storage transfer service between cloud buckets at Google, AWS, Azure, which supports TLS 1.3. See documentation here:  https://cloud.google.com/storage-transfer/docs/overview"
+16.1 Who has access to any portion of Customer’s data?  *,"Customer Success, Customer Support, Engineering on a case by case basis, and anyone Customer chooses to include when sharing data. All 3 orgs combined are <25 people at present state"
+16.2 Do you have people working outside of the United States that will have access to Customer's data? (Single selection allowed) *,Yes
+16.3 Where are these people located? *,"We are a fully remote organiztaion and have engineering staff based in the Brazil, Canada, India, United Kingdom, Uzbeckistan"
+16.4 Will data be going to any of these locations outside of the United States? (Single selection allowed) *,No
+16.5 How do you prevent the data from leaving the United States? *,We do not have a data center presence outside of the US. Our development and staging environments do not use live production data or customer data.
+"16.6 Is there a process implemented to ensure all violations, unauthorized access and anomalous activities are logged, monitored, reviewed and addressed in a timely manner? (Single selection allowed) *",No
+16.7 Please describe the process. *,"logged yes, are reviewed on an as needed basis"
+16.8 What is the timeframe for addressing unauthorized access violation? (Single selection allowed) (Allows other) *,48-72 Hours
+16.9 Are there procedures to periodically audit who has access to Customer data / information?  (Single selection allowed) *,No
+16.10 Why are there not procedures to periodically audit who has access?  *,We do not audit for access on a client by client basis. We do audit general data access on an annual basis. We are a rapidly growing company and are working to formalize our Governance Risk and Compliance processes and org but we are not there yet
+16.11 Please describe audit frequency of logical access *,We do not audit for access on a client by client basis. We do audit general data access on an annual basis. 
+16.12 Do you remove access from terminated employees or contractors within 24 hours of termination? (Single selection allowed) *,Yes
+16.13 What is your timeframe for removing access from terminated employees and contractors? *,24 hours
+"16.14 For involuntary terminations, can you remove access immediately? (Single selection allowed) *",Yes
+16.15 What methods are used to purge data once it is no longer required?   *,we have not yet reached a place where purging of data no longer required is an issue
+16.16 Are there any storage media (e.g. backups) that the data would not be purged from? (Single selection allowed) *,No
+16.18 Is Customer's production data used in or copied to non-production environments? (Single selection allowed) *,No
+16.19 Is Customer data masked or obfuscated in the non-production environments? (Single selection allowed) *,No
+16.20 Please explain why the data is not-obfuscated in non-production environments. *,Customer data is not used in non productions environments
+16.21 Please describe why this is not-applicable *,Customer data is not used in non productions environments
+16.22 Describe the procedure that ensures information is deleted from the development and test environments. *,development and test environments leverage fully anonymized non production data
+"17.1 Is any remote access allowed into the network that will process, store or view Customer data / information? (Single selection allowed) *",Yes
+17.2 Please describe the controls in place to manage this. *,we are a fully remote organization with products hosted in the cloud. In that sense all access is remote access. We follow the thesis of least privilidge and GCP access + Group membership is required
+"17.3 Do you allow laptops, tablets, smart phones or other portable devices on the network that will process, store or view Customer data / information?  (Single selection allowed) *",Yes
+17.4 Please describe the controls in place to manage these devices. *,"all of our employees work remotely and have company provided laptops. It is possible that your staff could send Scope3 staff Customer data, endpoint to endpoint, but it is not required. In fact the standard integrations are here:https://docs.scope3.com/docs/getting-started"
+17.5 Do you allow remote access to Customer data / information from non-company owned assets?   (Single selection allowed) *,No
+"17.6 If so, please describe the controls. *",policy
+17.7 Do you allow supervisory/admin functions to be performed over unencrypted external links?   (Single selection allowed) *,No
+17.9 Do you collect/review audit log data on remote access?  (Single selection allowed) *,Yes
+17.10 Do you use two-factor authentication for remote access? (Single selection allowed) *,Yes
+"17.11 If you do use two-factor, please describe the two-factor solution that is used. *",Microsoft Authenticator App on Mobile Device
+17.13 Are all remote access connections encrypted?   (Single selection allowed) *,Yes
+"17.14 if yes, describe protocols used. *",we are a fully remote organization with products hosted in the cloud. In that sense all access is remote access. We follow the thesis of least privilidge and GCP accounts + specific Group membership is required. We leverage google managed tooling to access our environment via the GCP UI. Authentication is handled by google. https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl https://cloud.google.com/storage/docs/gsutil https://cloud.google.com/sql/docs/mysql/sql-proxy
+17.15 Do you allow Customer data on mobile devices?  (Single selection allowed) *,Yes
+17.16 How do you protect this data on these devices? *,"We do not prevent it, but also I do not expect that Customer data will be on mobile devices (laptops) unless shared by Customer team with our account team via email or similar tool.  We do not manage mobile devices at this time. Company owned laptops are provided to staff, cell phones are BYOD. It is our intention to rollout a robust endpoint management platform in the next 12 months - resources and funding permitting. Mobile devices are encrypted and protected by the Native OS provided security suite (Xprotect on Mac and Microsoft Defender on Windows)"
+17.17 How do you manage mobile devices? *,"We do not manage mobile devices at this time. Company owned laptops are provided to staff, cell phones are BYOD. It is our intention to rollout a robust endpoint management platform in the next 12 months - resources and funding permitting. Mobile devices are encrypted and protected by the Native OS provided security suite (Xprotect on Mac and Microsoft Defender on Windows)"
+18.1 What language(s) were used to develop the application UI? (Multiple selections allowed) (Allows other) *,Typescript
+18.2 What language is the application back-end written in? (Multiple selections allowed) (Allows other) *,"NodeJS, Typescript, GoLang"
+18.3 What Frameworks are used in the development of your application? (Multiple selections allowed) (Allows other) *,"NextJS, React, Prisma, Apollo GraphQL"
+18.4 Does your application use cookies? (Single selection allowed) *,Yes
+18.5 What information is stored in cookies? *,we store session related data for unauthenticated users in order to limit access to the free section of our products.
+18.6 What is the cookie expiration period? *,varied
+"18.7 Is sensitive data of any type (credit card number, account login, passwords, PII, PHI) stored in encrypted form?  (Single selection allowed) *",Yes
+18.8 How is the sensitive data encrypted? *,Managed in Google by Google
+18.10 Is sensitive information ever “in the clear” or unencrypted in logs or any other transient storage? (Single selection allowed) *,No
+18.12 Do you perform penetration and vulnerability assessments? (Single selection allowed) *,Yes
+18.14 Please describe what type of testing is conducted. *,External Vulerabilty Scans (automated) and annual Penetration Testing (human based) currently with a partner Psicurity
+"18.15 Please provide details on how (internal, third party, or both) and frequency). *","semi-annual vulnerability scans, annual penetration tests"
+18.16 When was the last penetration test conducted? *,July 6th 2024. We are still in the retest period and expect to have a finalized report withing the next 45 days
+18.18 Does the application use service IDs/tokens? (Single selection allowed) *,Yes
+18.19 How often are the service ID passwords/tokens rotated? *,https://docs.scope3.com/docs/access-authorization
+18.20 Who has access to these service IDs/tokens and are they managed through any type of system or tool? *,https://docs.scope3.com/docs/access-authorization
+18.21 How is the Customer application separated from other customers that you have?   (Single selection allowed) (Allows other) *,Logical
+18.22 Describe the process for separating the Customer application from others. *,Logical sepparation is enforced through application code
+18.24 Does this solution introduce any hardware that will run on Customer’s network and/or facilities? (Single selection allowed) *,No
+"18.27 Who will be responsible for maintaining, patching, security updates, etc.? *","The head of Platform Engineering, CTO and Head of Technical Operations"
+19.1 Who are the intended users of this application and how will they be authenticated? *,"We defer to your advertising and marketing organization, named user and pw. SAML is available."
+"19.2 If a Customer Co user will be authenticating to the solution, do you support SSO/Federated Identity via SAML 2.0? (Single selection allowed) *",Yes
+"19.5 If identification or authentication process fails, is an error/event logged?   (Single selection allowed) *",Yes
+19.6 How do users get deprovisioned from the solution? *,"User management at Customer is the responsibility of Customer. The product has 3 access tiers - Basic (view only, limited data/obfuscated), Premium (all data), Admin (all data and manage users)"
+19.7 Please describe the authorization controls used by the solution. *,"initial account access is granted to the sales team, further access is controled by Customer. the product has 3 access tiers - Basic (view only, limited data/obfuscated), Premium (all data), Admin (all data and manage users)"
+"20.1 Should a security issue be identified, you must be able to immediately disable all or part of the functionality of the application.  Is this acceptable? (Single selection allowed) *",Partial
+20.2 Please describe why this is not acceptable *,Depending on the severity of the issue detected
+"Please provide a high-level summary and overview of your product, solution and/or services:",Scope3  provides sustainability and decarbonisation products and services to help advertisers measure and reduce their carbon emissions.
+How will you integrate your product with Customer? ,Customer can integrate Scope3 via an API integration. Docs here https://docs.scope3.com/docs/getting-started
+"Please attach all relevant network diagrams, data-flow charts and integration points with Customer's systems:",Scope3_integration_points.pdf
+Please provide documentation describing your Information Security Management Program (ISMP):,infosec.docx
+Do you provide your customers guidance about security best practice pertaining to your services?,No
+Are you certified for or do you comply with the following policies/regulations?,"In progress, GDPR"
+"If answered IN PROGRESS, please specify",We are in the process of selecting a vendor and auditor for SOC2 Type II certification
+Please attach your compliance certificate/report,in_progress_thus_no_report.pdf
+Can Customer perform independent vulnerability assessments or penetration tests?,Yes
+Will you allow a physical on-site audit from your customer if required?,No
+Have you undergone a vulnerability assessment and penetration test in the environment processing Customer’s data in the past 6 months?,No
+Are you able to provide timely mitigation for newly found application vulnerabilities ?,Yes
+Do you store information subjected to any privacy laws and regulations in the system?,No
+Do you have agreements which ensure your providers adhere to your information security and privacy policies?,Yes
+"Are the requirements for non-disclosure or confidentiality agreements reflecting the organization's needs for the protection of data and operational details identified, documented and reviewed at planned intervals?",Yes
+Does your legal department review all third party agreements?,Yes
+Do your organization's service level agreements provide your customer remuneration for losses they may incur due to outages or losses experienced within your infrastructure?,No
+Is your organization insured by a third party for losses?,Yes
+Do you have technical control capabilities to enforce data retention policies?,Yes
+Do you have controls in place to prevent data leakage or intentional/accidental compromise between tenants in a multi-tenant environment?,Yes
+Do you have the ability to logically segment or encrypt customer data?,Yes
+Do you support secure deletion (ex. degaussing / cryptographic wiping) of archived data?,Yes
+To which third-parties or related-parties do you provide access?,Contractors
+Do you have a Data Loss Prevention (DLP) or extrusion prevention solution in place for all systems which interface with your service offering?,No
+Do you provide multi-failure disaster recovery capability?,Yes
+Do you monitor service continuity with upstream providers in the event of provider failure?,Yes
+Do you provide your customers the ability to declare a disaster?,Yes
+Do you provide a customer triggered failover option?,No
+Do you share your business continuity and redundancy plans?,Yes
+"Please describe your business continuity policy and procedures (including RTP, RPO).",N/A
+Does your service run from:,The Cloud
+Which cloud service providers do you rely on?,Google Cloud Platform
+Where is your DataCenter / Cloud located ?,North America
+Your service is,multi-tenant hosting
+"Please provide a list of locations where Customer's data will be processed, stored or accessed (offices, data-centers, cloud services etc.):",Google Cloud us-central1
+Does the virtual machine management infrastructure include a tamper audit or software integrity function to detect changes to the build/configuration of the virtual machine?,Yes
+Do you utilize dedicated secure networks to provide management access to your cloud service infrastructure?,Yes
+"What is the availability policy in the event of downtime, etc.? How is data archiving conducted? ","N/A no data is lost during downtime, systems are simply unavailable"
+"Please describe your backup and restore policies (i.e. Interval, retention time, restore procedures etc.)",Time based retention policies applied to the data based on criticality and granularity.
+Are backups encrypted?,Yes
+"If you answered YES to the previous question, how is data archiving conducted? ",We rely on Google Cloud Backups and the inherent security therein
+Which of the following segregation architecture do you comply with? ,"Segregation of testing and production systems with application deployment procedures , User accounts are not shared between the production and non-production environment"
+Do you encrypt our data at rest (on disk/storage) within your environment?,Yes
+Do you maintain key management procedures?,Yes
+"If you answered YES to the previous question, please state how encryption keys are generated, saved and managed.","Managed in Google Cloud, by Google"
+Do you create a different encryption key for each customer (different from other tenants)?,No
+Do you support your customers' generated encryption keys?,No
+Do you have the capability to manage encryption keys on behalf of your customers?,No
+Do you utilize open source in your system?,Yes
+"Do you utilize the use of ""homegrown"" encryption algorithms?",No
+Do you implement a secure development lifecycle process?,Yes
+"If you answered YES to the previous question, please upload your software development life cycle methodology.",sdlc.docx
+Is every major version of the Product/Service penetration-tested against OWASP TOP 10?,No
+Do you implement input validation (both client-side and server-side) on every input field in the system?,Yes
+Do you conduct a quality assurance process?,Yes
+Do you utilize an automated source-code analysis tool to detect code security defects prior to production?,Yes
+Do you implement session management capabilities?,Yes
+"If you answered YES to the previous question, please describe Session Management and Session Lockout Mechanisms.",We use Google Firebase for session management
+"Do you secure your various environments (development, test, etc.) ?",Yes
+Do you have a formal Information Security Program (InfoSec SP) in place?,No
+Do you enable IP address restrictions?,No
+Please provide a comma separated list of external IP addresses.,n/a
+Please provide a comma separated list of Domains.,n/a
+Are your employees accessing data on a 'need to know' basis? (privileged access),Yes
+Do your consultants / external employees have access to personal and sensitive data?,No
+Will the workstation  lock in case it  is left open when an employee steps away from their desk?,Yes
+Are obsolete laptops or desktops fully erased before disposal to any purpose?,Yes
+Do you have user establishment and revoking process?,Yes
+Do you have users and permissions periodic review?,No
+Do you manage Privileged rights (Administrative permissions)?,Yes
+Do you keep hard copies (e.g. paper copies) of sensitive data (as defined by your data classification matrix)?,No
+Do you support secure deletion (e.g. degaussing/cryptographic wiping) of archived or backed-up data?,Yes
+Does customer data leave your production systems under any circumstance?,No
+Do you implement authentication to the system?,Yes
+"If you answered YES to the previous question, please describe the base product/ service authentication methods provided (user/password, X.509 certificate, smarted, external).",SSO
+Do you perform authentication in clear text?,No
+Do you use default vendor-supplied passwords and/or implement other default security parameters in the solution?,No
+Does the system support integration with internal user management systems including Microsoft Active Directory?,Yes
+How are user-level permissions managed? Please describe the permission management.,manually enforced role based access
+Do you have an internal password policy?,Yes
+Does each employee have a unique User ID?,Yes
+Do Password policy settings use of complex passwords?,Yes
+Do employees / contractors have the ability to remotely connect to your production systems? (i.e. VPN),Yes
+Do employees / contractors  frequently use mobile devices to access and share data from anywhere ?,No
+Do you require multi-factor authentication for:,"Production systems, Administration on your service (local or remote)"
+Do you support two-factor authentication for all management interfaces accessible to Customer's employees?,Yes
+Do you support SSO/SAML for:,"Internal systems., Customer access."
+How many DBAs do you have?,0
+Do you support the use of authorization and role-based access control in the system?,Yes
+"If you answered YES to the previous question,  please describe the roles in the system and their capabilities","Basic: regular user role, Premium: paying user role, Admin: administrator for an organization"
+Do you support the management of roles and access controls inside the system (i.e. change authorization to access data / modules within the system)?,Yes
+"If you answered YES to the previous question, please describe in depth your capability to manage roles and their access rights.","the product has 3 access tiers - Basic (view only, limited data/obfuscated), Premium (all data), Admin (all data and manage users)"
+Do you support integration with identity management solutions (IDM) to manage identities and access rights within the system?,No
+Do you support integration with a Rights Management System (RMS) or a similar system which allows granular level of control on data assets?,No
+Do you support field-level authorization?,Yes
+"If you answered YES to the previous question, please describe the level of granularity for access control.",Per field on GraphQL API requests and responses
+Do you disclose configuration files for any web servers and/or associated support functions (such as Search Engines or Databases)?,No
+Do you implement caching and/or Session URL that allows logged out users to reuse the application without supplying their authentication details?,No
+"Do you store user details and/or sensitive data (usernames, passwords, certificates, role and the administration) encrypted in the system?",No
+Does the system support logging and monitoring of each activity taking place in the system?,Yes
+"If you answered YES to the previous question, please provide a list of logs within the system.","access, change "
+"Please describe the audit trail and logging capabilities, how activities can be tracked to an individual user or device (both infra and application level are required) for Customer's users and for your own staff / contractors? (Integration with our CASB tool)",all backend logs are aggregated in Google. All UI based activity is collected via PostHog and exported to  BigQuery
+"For each log written, do you write the following:","Timestamp, User Details, Action taken, Result (success of failure), Affected data / system, Origination of event"
+Do you provide correlation best practices to identify possible misconduct?,No
+Do you support sending logs via syslog?,No
+Do you support log extraction through API?,No
+Do you support automated email in case of a security event (e.g. failed login)?,No
+Do you support the auditing of administrative actions?,No
+Is there a patch management mechanism?,Yes
+"If you answered YES to the previous question, please elaborate.","We are a Google Cloud Customer, we do not have our own hosted environment. Patches are thus managed by google"
+"Are your servers, databases, etc. hardened?",Yes
+Do you implement file integrity monitoring capabilities on the servers?,No
+State if there are change management procedures and/or procedure for installing software updates?,Yes
+"If you answered YES to the previous question, please describe the configuration management procedure.","We are a Google Cloud Customer, we do not have our own hosted environment. Updates are thus managed by google"
+State if there is a password policy for our application infrastructure?,Yes
+What systems do you have in place to mitigate classes of web application vulnerabilities?,"Anti-Malware, Botnets, Antivirus, Application Security, WAF, Patch management, Phishing, Awareness, Anti-Spam, Cloud Security, Firewalls, Identity management, Access Control, Authentication, SSO, Password management, Incident Response"
+"If you have any other solutions / products that you use, please elaborate here.",N/A
+Do you have any breach detection and/or anomaly detection systems with alerting?,No
+Do you maintain an updated information security architecture?,No
+Do you maintain a proposed information security architecture?,No
+"Does the system support encryption of traffic through all components (web, application, database)?",Yes
+"If you answered YES to the previous question, what network traffic protocols are supported?",TLS v1.0 and up
+Do you use:,TLS v1.2 or below?
+"Do you encrypt all data traffic originating from your clients, including machine to machine traffic (e.g. WS integration?)",No
+Do you use a firewall on the network?,Yes
+Do you use an active IPS system on the network?,No
+Do you use a Web Application Firewall on the network?,Yes
+Do you use a Database Activity Firewall on the network?,No
+Can you limit the number of IPs accessing our instance of the server?,No
+Can you limit the number of IPs accessing our administrative console?,Yes
+Are external network vulnerability assessments conducted?,Yes
+"Are cables and telecommunication infrastructure, used in conjugation with the service, protected from interceptions ?",Yes
+Do you have controls in place ensuring timely removal of systems access no longer required for business purposes?,No
+Do you provide metrics to track the speed for removing systems access no longer required for business purposes?,No
+Do you document how you grant and approve access to our data?,No
+Do you have a method of aligning provider and our data classification methodologies for access control purposes?,No
+"Is timely deprovisioning, revocation or modification of user access to the organizations systems, information assets and data implemented upon any change in status of employees, contractors, customers, business partners or third parties?",Yes
+"Is any change in status intended to include termination of employment, contract or agreement, change of employment or transfer within the organization?",Yes
+"Do you require, at least annually, certification of entitlements for all system users and administrators?",No
+"If users are found to have inappropriate entitlements, are all remediation and certification actions recorded?",Yes
+Will you share user entitlement remediation and certification reports with your customers if inappropriate access was enabled to Customer's data?,No
+"How many users (in all systems), potentially, have access to systems that process / store customer data?",<50
+"If users have access to your customers data, do you monitor this access?",No
+Do you have an Information Security Risk Management Program (InfoSec RMP)?,No
+Does your organization do periodic audit log review by management?,Yes
+How many employees are dedicated to the information security team?,<3
+Do you provide tenants with documentation describing your Information Security Management Program (ISMP)?,No
+"Do you have documented information security baselines for every component of your infrastructure (e.g. hypervisors, operating systems, routers, DNS servers, etc.)?",Yes
+Do you have the capability to continuously monitor and report the compliance of your infrastructure against your information security baselines?,Yes
+"Are all employment candidates, contractors and involved third parties subject to background verification (as allowed by local laws, regulations, ethics and contractual constraints)?",No
+"Are all personnel required to sign Confidentiality Agreements to protect customer information, as a condition of employment?",Yes
+Do you have an information security awareness program?,No
+Please describe your security awareness program for your personnel.,we do not yet have a formalized security awareness/testing program. We do make regular posts in our Slack instance reminding folks of the importance of being aware and informed. We also post about the latest threats and resolution
+Are employees made aware of what action might be taken in the event of a violation and stated as such in the policies and procedures?,Yes
+Are all endpoint laptops that connect directly to production networks centrally managed?,Yes via Ripling MDM and Intune
+What type of antivirus solution is installed on your endpoints?    ,Windows Defender (for windows based endpoinds) and Xprotect and Sentinel One(for Apple Endpoints )
+Do you have a formalized Security Incident Response Program?,Yes
+Will our security be notified in case of relevant incident ?,Yes
+"Does your security information and event management (SIEM) system merge data sources (app logs, firewall logs, IDS logs, physical access logs, etc.) for granular analysis and alerting?",Yes
+Does your logging and monitoring framework allow isolation of an incident to specific tenants?,No
+Will customers (security) access relevant audit trail after the incident ? ,No
+Can customers define alert triggers ?,No
+"Do you share customer data with, or enable direct access by, any third-party?",No
+Are there any physical security procedures?,No
+"Are ingress and egress points such as service areas and other points where unauthorized personnel may enter the premises, monitored, controlled and isolated from data storage and process?",No
+"Do you protect on sensitive areas like : DataCenters , Secured rooms ? If so, how do you protect ?",No
+"Do you allow Wi-Fi access to internal networks? If so, how do you secure it?",No
+Do you have anti-malware programs installed on all systems to support your cloud service offerings?,Yes
+"Do you ensure that security threat detection systems using signatures, lists or behavioral patterns are updated across all infrastructure components, within industry accepted timeframes?",Yes
+Does the application/service contain any of the types of personally identifiable information listed in Section 3 below? (Yes/No),yes
+"Has the application / service been fully decommissionned with no access possible and all data has been purged?  (Yes/No).  If the response was ""Yes"", do not provide responses beyond Section 2",no
+"List all personally identifiable information that is processed along with any accompanying information fields.  This may include (not exhaustive):, bank account details , pension details, salary details, national insurance number, passport details, visa details, number of accumulated sick days (as data concerning health), date of birth, personal contact details such as address, mobile telephone number, personal email address, reprimand notes of an employee, notes relating to hiring of prospective employees, employee name, employee ID, username, IP address, work email address, social media (LinkedIn, Twitter or other public domain accounts), notes relating to promotion, work related videos, profile images",employee name and email address
+Have the liability clauses been reviewed if there was a data breach? (Yes/No),we've never had a data breach
+"If the liability clauses were reviewed, does the supplier accept liability if at fault? (Yes/No)",we've never had a data breach
+Are there back-ups or the ability to restore information? (Yes/No/Unknown),yes
+If backups are available what is the approximate recovery time before these are available?,"yes, as soon as commercially reasonable"
+Are stored password details encrypted? (Yes/No),yes
+Do application / service admins have enforced multi factor authentication (MFA)? (Yes/No),no
+Are strong passwords enforced? (Yes/No),yes
+Are passwords kept static unless there are sufficient grounds to suspect that the password may have been compromised? (Yes/No),yes
+Are accounts allocated for a single user only (eg. no shared accounts)? (Yes/No),yes
+Is SSL encryption always enforced on traffic? (Yes/No),yes
+Is there a retention policy applied to the storage of the personally identifiable information? (Yes/No),no
+Does the supplier have an information security certification such as ISO27001? (Yes/No),no
+How many administrators are there?,"to be determined by Customer, recommend as few as possible"
+"As an indirect measure of use, approximately how many users login daily?",to be determined by Customer
+Explain the process for removing access from leavers,account administration is handled via the Scope3 Collaborative Sustainability Platform (CSP)
+How is access granted to the system?,"Initial access is granted to the primary Customer contact, futher access is provided to additional Customer employees by the Customer contact"
+Who controls/ approves/ grants access?,Customer
+Is there a process for revoking temporary access? (Yes/No),yes
+Is there a log that can be audited for permission requests and revocations? (Yes/No),no

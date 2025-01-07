@@ -1,0 +1,346 @@
+Question,Answer
+Please provide your full company name. ,Scope3 PBC
+Please provide the location of your company's headquarters. ,"We are a fully remote, global first organization with in-market teams across JAPAC, Europe and North America. 
+
+Scope3 PBC
+228 Park Ave S
+PMB 24984
+New York, New York 10003-1502 US"
+Please provide the year in which your company was founded. ,2021
+Please provide your company's total number of employees. ,80
+Please list personnel and their qualifications in sustainability measurement and reporting. ,"Scope3, the collaborative sustainability platform decarbonizing media and advertising, is led by recognized industry experts in sustainable media who have advanced the development of a robust emissions model and open source methodology that rigorously applies the GHG protocol to the complex realm of digital advertising. Selected personnel of note include:
+
+Brian O'Kelley, CEO and co-founder, is a respected entrepreneur and executive with a track record of building companies that defined and led multi-billion dollar categories. Credited with the invention of programmatic advertising and the online ad exchange, Brian is deeply committed to technology-driven innovations that benefit society while improving the health of the planet. 
+
+Anne Coghlan, COO & co-founder, was responsible for the strategy and commercialization of the the industry’s first programmable DSP as product and strategy lead at AppNexus. At Scope3, Anne combines her passion for the planet with her expertise in building world-class products for the ad industry. 
+
+Gabriella Kay, Head of Product, Creative & Production, brings comparable wealth of knowledge pertaining to creative production having joined Scope3 after co-founding Green The Bid, an organization committed to helping the production community tackle the collective goal of transitioning advertising production to sustainable and regenerative practices."
+Please attached separately your company's corporate sustainability report. ,"We are very young company and still working toward a full corporate sustainability report. Work that has been done to date includes measurement and reporting for all of our carbon emissions company wide. We have a dedicated workstream, ""Walking the Walk,"" tasked with ensuring that our core business values are reflected in our day to day operation. 
+
+Examples of our efforts in this area include: 
+- Development and implementation of our Climate Conscious Travel Policy. The purpose of this policy is to provide more robust guidelines for all employees who travel for work, in order to ensure that we are focusing not only our company finances, but also on everyone’s health and safety, and our impact on the planet. The policy makes it clear that when travelling short distances that the train should always be used instead of flying. All travel needs to be logged so that it can be carbon compensated. Flying should be kept to an absolute minimum and all flights must be approved by management. Staff are instructed to opt for non stop flights where possible and for short to medium haul flights staff must book economy/coach class. 
+- Scope3 is a fully remote company. We do not have any offices at all and everyone works from home. This means we save a lot of carbon from our scope 1 and 2. 
+- Scope3 only serves vegetarian food at our industry and internal events. This is a deliberate decision to reduce carbon that comes from farming."
+Please provide your company's annual GHG data for most recent reporting year. ,Scope3 is releasing company GHG data in Q4 2024 at which time we will be happy to share with Duration Media for consideration.
+Please provide your company's science based target if applicable. ,Work toward SBTi is in the planning phase. A key outcome that our “Walking the Walk” initiative aims to achieve is that Scope3 is an industry example of how to report on and reduce corporate emissions. Work on an SBTi commitment is included in our roadmap and we are happy to provide updates as this effort progresses.
+"Please outline any relevant qualifications, certifications or accreditations your company holds related to GHG measurement and reporting, plus any relevant organizations with which your company is affiliated.","Since Scope3’s entire mission is to drive systemic decarbonization in media and advertising, we are centrally involved with industry leading organizations such as the ANA, WFA, AdNetZero, IAB, etc to help evangelize, standardize and contextualize both the impact our industry has in contributing to carbon emissions as well as the opportunity to ignite change. ?
+
+Scope3+GMSF+IAB+AdNetZero: Scope3 works on several working groups providing knowledge and sharing and contributing data to the industry bodies that are working to develop frameworks and standards in Carbon Emissions Measurement. ?
+
+WFA Planet Pledge Pilot Program: Scope3 partnered with the WFA and 6 global clients to understand how adding carbon as a campaign metric impacted performance. In all 5, we found removing high carbon inventory had a neutral to positive effect on performance!?
+
+”I Cannes Remove Carbon” Scope3 Cannes-specific program in partnership with Carbon Direct.?
+
+ANA Media Programmatic Media Supply Chain Transparency Report: Scope3 powers some of the data in this report. This report focuses on the costs in Programmatic and opportunities for efficiencies.?"
+Please provide an overview of total number of clients for whom you provide emissions measurement services and technology. ,"Scope3 provides emissions measurement to over 150 clients in a direct capacity. Through our partnerships with technology partners, Scope3 powered Green Media Products (GMPs) are used by over 3,500 brands."
+"Please specify what percentage of your clients are advertisers, agencies, ad tech platforms, publishers or other. ","Our client distribution is as follows: ad tech platforms (50%), advertisers (30%), publishers (20%)."
+Please name your 3 largest clients.,"Microsoft, TheTradeDesk, Yahoo"
+Please provide 3 client references that can provide feedback about their experience with your products and services.,"Frank Maguire, VP of Insights, Strategy & Sustainability, Sharethrough (frank@sharethrough.com)
+Sarah Gordon, Channel Partner Director, Index Exchange (sarah.gordon@indexexchange.com)
+Carlos Bracho , VP Global Ad Tech, Axel Springer (carlos.bracho@axelspringer.com)"
+Please provide 1 or 2 case studies that demonstrate your company’s capabilities in providing carbon measurement services to ad tech or media companies.,"SiemensEnergy MiQ - Scope3 Case Study (https://scope3.docsend.com/view/gexachjye4dv3ecs)
+Vodafone AdForm - Scope3 Case Study (https://scope3.docsend.com/view/qn3cyigjqygvcuiw)"
+US and Canada,Yes
+EMEA/MENA,Yes
+LATAM,Yes
+APAC,Yes
+Comments,"We have global coverage: you can ping our API with any valid country code, and we will return emissions values. Some countries have more accurate grid mix data vs. others, but we still have coverage nonetheless. We're working to better model properties without ads.txt, but at the moment that's the one core dependency worth mentioning."
+Latest Creds Deck (link),https://scope3.docsend.com/view/rqhj298y49qwjhn3
+Products Description (please detail all available products),"1. Measurement: Scope3 supports brands and agencies in reducing carbon emissions from their media campaigns by providing tools and solutions for measuring and identifying waste in their buying behaviours. 
+2. Media Reporting + Collaborative Sustainability Platform: our O&O platform for measuring, visualizing, and actioning against the emissions generated by your media campaigns.
+3. Climate Shield: Climate Shield is a pre-bid segment that stops your campaigns from serving on the highest-carbon domains ('climate risk inventory') and Made for Advertising sites. Early agency & brand adopters have found blocking high-carbon inventory typically improves performance, since much of that supply is what you might consider waste: MFA sites, publishers with enormous amounts of reselling, low-attention domains, etc. 
+4. Green Media Products (GMPs): Green Media Products (GMPs) are available through our contracted SSPs and publishers. GMPs enable you to curate Deal IDs that exclude 'climate risk' inventory and Made for Advertising sites. 
+5. GMP+: GMP+ is an advanced version of our Green Media Products that block climate risk, high emissions inventory, and MFA sites. GMP+ is the first decarbonization product to model emissions at the placement level using GPID. 
+6. Custom Carbon Algorithms: We are partnered with Lighthouse, Chalice, Scibids, Greenbids, and other providers to provide custom algorithms that optimize to both performance and emissions. We are happy to schedule time to speak further about what this looks like in various DSPs."
+Solution Differentiator (what deifference you from the competition),"We founded the company in January 2022 with the mission of driving systemic decarbonization in media and advertising. Since our founding, we have established ourselves as the market leader in sustainable advertising solutions: modeling the complex digital advertising supply chain and helping brands dramatically reduce digital waste, both reducing emissions and increasing the efficacy of advertising investment. We are the only end-to-end supply chain emissions data platform to combine public and private data sources to deliver a predictive model of emissions for every publisher and vendor across advertising channels, without the need to add pixels or complexity to the operational workflow of trafficking a campaign. Our emissions data can be integrated with planning, measurement and reporting tools to seamlessly deliver carbon-adjusted metrics and demonstrate progress against climate goals and commitments. We additionally power a number of solutions for emissions reduction, including our Climate Shield pre-bid segment and Green Media Products (GMPs), which both exclude the highest-carbon domains ('climate risk inventory') and Made for Advertising sites.
+
+With that in mind, our differentiaition spans several dimensions: 
+
+1) Category creation and leadership. Prior to Scope3's inception, 'emissions reduction' was typically thought of as relating to a company's physical operations, manufacturing, and traditional supply chain. Scope3 developed a proprietary, owned & operated platform to measure carbon emissions in the media ecosystem, which has created a level of awareness, adoption, and action that did not exist prior to our creation. 2) Unparalleled industry expertise. We are founded and led by a team that invented many of the foundational technologies behind the $100B programmatic advertising industry. Most notably, our CEO Brian O'Kelley was the previously the CEO & Founder of AppNexus and personally invented much of the core infrasturcuture upon which our industry was built. Beyond credentials, this gives Scope3 the background and expertise to accurately understand, model, and measure the digital ecosystem. 3) We live our mission. Namely, to systemically decarbonize media and advertising. We use our mission as the north star for our strategy, culture, and everyday decision making. One consequence of our mission is that we design opinionated solutions that we believe will drive the best outcomes for our core constituents: advertisers, publishers, citizens of the digital world, and our planet. 4) Ubiquitous product accessibility. We have intentionally made our measurement + reduction solutions widely available. Our aim is to ensure we meet our partners 'where they are' - from leading verification companies like the IAS, DV, and Ebiquity, to leading ad tech platforms like Magnite, Xandr, and OpenX, to premier publishers like the NY Times, Meredith, and The Atlantic. 5) Exceptional global service. We have purposely over-indexed on customer support and services resources, available globally on an always-on, 'follow the sun' basis.
+
+CSP & Media Reporting -"
+"Target Audience (eg: brands, publishers, adtech, agencies, etc.)","We work with all partners including: Agencies, brands, publishers, adtech, DSP, SSP, creative agencies, etc."
+"Use Case(s) (eg: offset, measure, report)","Measurement & Media Reporting: Measure the carbon footprint of your advertising activity across all digital media channels using the industry's first activity-based carbon measurement platform, to either highlight good performance and low carbon, or opportunities to reduce high carbon placements and inventory. 
+
+Reduction/Optimization: Whether optimizing partners and placements within a channel such as social media, or highlighting the opportunities in programmatic to get to the same invenotry with a cleaner supply chaing, Scope3 reduction tools, powered by our carbon measurement has become a leading indicator of efficiences in the ecosystem. 
+
+Carbon Compensation: Available through our partnership with Carbon Direct https://www.carbon-direct.com/"
+Publicis Clients that are live or have tested the platform,"A number of Publicis clients use our solutions, including via our integration with Lighthouse (we are the exclusive emissions data provider for Lighthouse). Notable examples include: Comcast, Best Buy, Kimberly-Clark, REI, Cit, Brown-Forman, Haleon, Bank of America, iRobot, Toyota, and many more."
+Point in Time Solution or Real-Time?,"Both. Our platform updates every 24 hours and we have the ability to take in data at any time. Our platform also has the ability to ingest a report for any specific moment in time and pass back values for that timeframe. 
+
+As of July 1, we offer hourly measurement in addition to daily. Grid intensity can fluctuate significantly on an hourly basis due to the variable nature of both renewable energy sources (sun, wind) and electricity demand. To achieve effective decarbonization, having hourly data is critical. Real-time grid mix data is available for an additional 11 countries, 39 countries total. Where real-time data is unavailable, we use published averages or world-wide defaults. On average, this update increases carbon intensity by six percent. However, some regions, like Brazil and India, were more heavily impacted. Check out the changes at scope3.com."
+Reporting,"Scope3 have built the most robust, Always-On Emissions Measurement in our Collaborative Sustainability Platform (CSP).
+Media Reporting integrates campaign data from where you buy media and combines it with the Scope3 emissions model to deliver a complete view of your campaign’s carbon footprint and performance.
+With Media Reporting you will have:
+? Easy-to-access, always-on carbon measurement for your campaigns across digital channels.
+
+? Granular carbon emissions data overlaid with performance (when provided).
+
+? Actionable reduction insights to help you strike a balance between low carbon and efficiency.
+
+The Scope3 measurement dataset has global coverage and is available in all countries. Coverage rate typically depends on publishers' adoption of ads.txt (e.g. slightly lower lower in Japan, China and Brazil)."
+"Media Channels & Formats Supported 
+(display, mobile, video, CTV, etc.)","We provide omnichannel coverage across digitial channels: programmatic, IO-bought digital, social, YouTube, CTV, OLV, in-app, DOOH, and digital audio."
+Commercial Model (detail all available),"We have over 100 clients across the ecosystem: brands, agencies, publishers, SSPs, DSPs, verification companies, and other ad tech companies. We have various commercial models, including CPM and SaaS subcription pricing, for our different customer types. More on our pricing for agencies and brands is below."
+Pricing Model,"Measurement: brands and agencies may access measurement directly through our Collaborative Sustainability Platform, at a rack rate of $0.02 for measured impressions. Our data is also available through market-leading verification companies, including DoubleVerify, IAS, and Ebiquity. Further, we've made our data available via partner toolsets: this includes Publicis, where our data exclusively powers both the Responsible Media Tag (RMT) and Lighthouse.
+
+Beyond measurement, we have a suite of solutions aimed at helping brands and agencies reduce their emissions:
+
+1) Climate Shield is available in a number of DSPs, including TTD, Yahoo, Xandr, Nexxen (formerly Amobee/Tremor), and Basis. Climate Shield is a pre-bid segment that stops your campaigns from serving on the highest-carbon domains ('climate risk inventory') and Made for Advertising sites. Early agency & brand adopters have found blocking high-carbon inventory typically improves performance, since much of that supply is what you might consider waste: MFA sites, publishers with enormous amounts of reselling, low-attention domains, etc.
+ 
+2) Green Media Products (GMPs) are available through our contracted SSPs and publishers. GMPs enable you to curate Deal IDs that exclude 'climate risk' inventory and Made for Advertising sites. Carbon compensation is also available for the emissions created by these Deal IDs, and is executed through Carbon Direct.
+
+3) Custom algorithms. We are partnered with Lighthouse, Chalice, Scibids, Greenbids, MiQ, and others to provide custom algorithms that optimize to both performance and emissions. We are happy to schedule time to speak further about what this looks like in various DSPs."
+Data Methodology,https://methodology.scope3.com/lifecycle
+Data Sources ,"Scope3 has built a robust and detailed proprietary model of website and ad delivery emissions. The data that Scope3 uses come from a variety of data sources, both public and private. We license some 3rd party datasets as inputs of our emissions model."
+Describe how your solution incorporates the WFA/GARM/Ad Net Zero Global Media Sustainability Framework. ,"Scope3's methodology is aligned with the GMSF as much as possible given the draft nature of the framework today. As soon as the accreditation process is finalized, we fully expect to attain accreditation. 
+
+The V1 of the GMSF launched in Cannes (June 2024) is the beginning of what will become an established framework for our industry to adopt and audit against, but it is not there yet. Industry standards take time to mature and the GMSF is no exception. Scope3 has been an active supporter during the development of the GMSF and we will continue to support in the upcoming iterations."
+"Provide any other standards, guidelines or framework your solution incorporates.","Please refer to the digital advertising framework comparison diagram in tab A - Scope3 Framework Comparison for a visualization of the the boundaries and inclusions of the SRI V2 framework, Scope3’s open source framework, and the first iteration of the GMSF.
+
+The SRI V2 standard covers a smaller area of the advertising lifecycle assessment, but it is comprehensive within it’s boundaries, with clear formulas and outlined data sources in each area.
+
+The Scope3 framework documents every single calculation and data source across our methodology and covers all the areas of the SRI and almost all of the areas of the GMSF.
+
+The GMSF is covering a wider area than SRI, and including some interesting new areas in boundary, like targeting and tech manipulation, but these areas are not mature yet and still awaiting further details on how they will be measured.
+
+All of these frameworks will continue (along with others like Dimpact and GroupM) while the GMSF is socialized and expanded to support the entire advertising ecosystem."
+"Describe your process for collecting data, including methodologies for attribution and estimation.","Scope3 has built a robust and detailed model of the environmental impact of the media and advertising industry. This model is based on an open source methodology and uses public and privately contributed data sources to produce an estimation of the carbon footprint of each ad impression across many channels.  
+
+Please see here for our open source measurement methodology (https://methodology.scope3.com/lifecycle) and here for our API documentation (https://docs.scope3.com/docs/getting-started) which details our data schemas and the mechanisms we make available to partners for seamless data exchange.
+
+We have a suite of products that can be used across the advertising ecosystem including the industry's first Collaborative Sustainability Platform - available at Scope3.com. Users may access our emissions model and decarbonization products within our platform or data exchange via cloud bucket or API. Integration options are flexible and can support diverse use cases."
+"Is your solution capable of measuring the carbon impact of a programmatic bid request? If so, what specific data needs to be provided, and by which party (buyer, seller, DSP, SSP, etc.)? ","Granular measurement of programmatic bid requests is a core strength of the Scope3 emissions model. Details of our methodology pertaining to ad tech platforms is documented on GitHub (https://github.com/scope3data/methodology/blob/main/scope3_methodology/ad_tech_platform/model.py). 
+
+Our model is informed by contributed data from all of our partners greatly elevating the precision of emissions measurement output. In cases where contributed data is not available, we leverage a series of default fallbacks that support reasonable estimates in most situations."
+Duration Media's Sequency™enables publishers to curate impressions that require only a single bid request (vs. an average of 135 bid requests for standard display impressions). Explain in detail how your solution can compare the carbon impact of a Sequency impression vs. a standard display impression.,"Scope3 has adopted a core metric, gCO?PM (grams of carbon equivalent per thousand impressions), that allows us to normalize measurement across channels, properties, and digital supply paths on the foundation of activity-based, product level data in line with GMSF best practice. Because of the dynamic and granular nature of Scope3 emissions measurement, we are able to deliver nuanced comparison of transactions that leverage Duration Media Sequency™ attributing the full impact of carbon avoided per impression through use of your technology."
+Explain how your solution aligns with the new RFI requirements outlined in the WFA/ GARM/Ad Net Zero Global Media Sustainability Framework. ,"The GMSF has suggested two data request forms in V1 of the framework: one for media owners, one for solutions providers. For media owners, we have been working closely with our partners already and our model aggregates various data points about their corporate emissions. This approach is aligned with the GMSF.
+
+For solutions providers like ourselves, we have provided the request form as an attachment for full transparency (GMSF_Solutions_Transparency_Scope3.pdf)."
+Explain how your solution is different from other carbon measurement solutions. Specify any unique differentiators for buyers and publishers. ,"Our primary differentiators are the transparency and rigor of our emissions model and the robust suite of products that we have built around our emissions data set to make our data actionable across the entire digital lifecycle of an ad. In contrast to perceived competitors in sustainable advertising with core business focus in other areas such as ad creative, selling ethical ad formats, or spend-based carbon accounting of overall corporate emissions, Scope3 is laser-focused on enabling stakeholders across both buy and sellside to decarbonize media and advertising."
+"What, if any, third party has verified your company's carbon emissions measurement methodology? ","BL évolution (https://www.bl-evolution.com/) has conducted an initial assessment of our methodology against the SRI framework and ISO 14067. We are finalizing adjustments following review of their analysis and expect work to be completed on this project within the next quarter.  This assessment is a first step. We have spoken with EY and PwC, both of whom have indicated that work on an audit is contingent on industry sustainability standards which are currently in the process of being established and adopted. Additional supporting documentation is provided via attachment (20240702-Cover_letter-Scope3.pdf)."
+"AdTech Integrations 
+(DSP, SSP, Ad Servers)","We have over 100+, including:
+Magnite
+The Trade Desk
+Sharethrough
+Yahoo
+OpenX
+Teads
+MiQ
+Media.net
+Yahoo SSP
+Index Exchange
+Picnic
+Plug
+ShowHeroes
+The GoodNet
+GumGum
+Ads for the Planet
+The Goodnet
+Café Media
+Blockthrough
+Givsly
+ADYOULIKE
+Xandr
+Basis
+Viant
+Nexxen
+Bidtellect"
+Ad Verification Integrations,"DV, IAS, Ebiquity, Lumen"
+Publisher Integrations,"We have many publisher integrations, including:
+AccuWeather
+Vox
+Dailymotion
+The Atlantic
+Insider
+Hearst
+The Guardian
+New York Times
+Penske Media
+Future
+Group Black
+Raptive
+TripAdvisor
+La Presse"
+"Other notable marketplace integrations 
+(offset partners, etc.)",Carbon Direct for Carbon Compensation. 
+Comments,
+Certifications/Memberships,"Scope3 carbon emissions data does not touch user data, cookie data, PII data in any way. We do not have the concept of user ID in our data set. As such we are not subject to CCPA or other privacy laws including GDPR."
+Comments,
+Implementation and Activation Process,"Implementation for Measurement: 
+There are several ways to work with Scope3 for measurement. This can be either through a partner such as Lighthouse, IAS or DV. Our clients may also work with us directly via a file upload, cloud sync, or API integration. More details of these options can be found here - https://docs.scope3.com/docs/getting-started
+
+Activation for Reductions:
+This can be done via 
+Climate Shield - Pre-bid in DSP platforms 
+GMP & GMP+ - Activated via the creation of Deal IDs via SSP partners 
+Custom Algorithms - Created either by a 3P partner, or directly with an agency team"
+Partner Name:,Scope3
+Date:,8/26/2024
+Contact Name(s),Joey Leichman
+Contact Email(s),jleichman@scope3.com
+Contact Phone Number(s),201-982-4237
+Could you provide a quick overview of your Carbon emissions measurement approach? What are the foundational aspects of the methodology? Which inputs are used to feed the calculation models?,"Our complete methodology, including inputs, is open-source and available at https://methodology.scope3.com/lifecycle. To summarize: the lifecycle of an ad can be broken down into three stages: production, distribution, and disposal. The production phase includes media production and creative production. Disposal relates to recycling of newspapers or vinyl used for billboards and is not relevant to digital media. The distribution phase has three components:
+
+1) Media distribution. For more on the data we leverage and our methodology we employ to measure publishers emissions, please see: https://methodology.scope3.com/corporate_model
+2) Ad selection. For more on how we generate a comprehensive view of a given publisher's ad tech stack, please see: https://methodology.scope3.com/publisher_model
+3) Creative delivery at the point of consumer engagement. For more information on how we measure consumer device, please see: https://methodology.scope3.com/consumer_devices. For more information on how we measure creative distribution, please see: https://methodology.scope3.com/creative.
+
+For a visual representation of some of these concepts, please see: https://scope3.docsend.com/view/6dzxkipdmzxbcqef"
+Could you provide a document or a link to your measurement methodology principles?,Our methodology is open-source and available at https://methodology.scope3.com/lifecycle. We invite you to visit the site to dig deeper into our model.
+Is your methodology following GARM Framework?,"Scope3 has been centrally involved in the working groups building out the GMSF (formerly GARM) and we will surface V1 of the framework in our UI in the coming weeks. However, the GMSF is not complete - in the interim, we are continuing to employ the Scope3 methodology, which is closely aligned with the GMSF."
+Is your methodology verified?,We have been assessed against the SRI standard and Alliance Digitale by BL Evolution. Highlights from that assessment are below (row 26).
+How is your methodology factoring Supply Path?,"We map + visualize the digital supply chain for every publisher globally at scope3.com (New York Times example in 'Screenshots' tab), and this is a core input for calculating a given publisher's Ad Selection emissions (more on that in row 13). When measuring a given impression served by a brand or agency, we see each 'node' along each supply path and use that as a key factor in determining total emissions."
+"At Horizon we have been running an SPO program for a few years, Do you factor cases when SSP is part of the SPO program?","Our data does include SSP-level detail and we've found there can be differences in emissions from SSP to SSP. However, those differences are relatively immaterial compared to the delta between high- and low-emitting publishers.
+
+With that in mind: Horizon limiting bid responses to a shortlist of partners is certainly the right thing to do for several reasons. However, the publishers on which Horizon serves still send bid requests through their full ad stacks: they still engage their full suite of ad server, SSP, and DSP partners - which spins up servers, which in turn creates emissions - regardless of how Horizon respond. In other words, SPO unfortunately does not reduce pub-side emissions. This is why steering investment towards low-carbon pubs is a powerful way to reduce carbon + reduce waste, which in turn tends to drive improved media performance."
+How did you compile Publisher information to allocate CO2 emissions to a certain placement?,"Scope3's overall approach to publisher emissions modeling can be found at https://methodology.scope3.com/publisher_model. In addition, Scope3 offers publishers and Ad Tech Platform partners self-serve custom ad format modeling. Our platform recognizes the emissions from the size and number of images, duration of videos, dimensions of placements, and any additional kbs (e.g. for a lens or graphic element) in a format."
+"What level of granularity are you providing Carbon Emissions estimate (Site, Domain, Placement, Event, other)? Please include details in ""Reporting Output"" Tab","Reporting output in Scope3's Media Reporting dashboard is available by advertiser, country, channel, and campaign. Teams can also export data out via cloud bucket integration at any level of granularity. Emissions can be segmented by  advertiser, country, channel, campaign, device type, insertion order/line item/ad group/placement, creative, creative size/duration, network, or domain/app name."
+,
+"Do you have a verification process in place with publishers (Y/N), If yes, please also inform in the Verified Publisher List Tab",Yes. Scope3 verifies the properties and ad formats of publisher partners if their contributed data meets our requirements for acuracy. Details linked here.
+"Have you run benchmark with other methodologies? Does the measurement you provide in a close range to other competitors calculations? If there were differences, where do you think they come from?","As mentioned above, we have been assessed against the SRI standard and Alliance Digitale by BL Evolution. The assessment found Scope3 uses more accurate and up-to-date data than other methodologies. The assessment concludes: ""The comprehensive review concluded that Scope3 SRI/AD module is aligned with the SRI/AD framework. Its methodology is robust, data handling is precise, and reporting mechanisms are transparent and user-friendly. The tool provides a reliable resource for advertisers seeking to measure and reduce the carbon impact of their campaigns. Commendations are due to Scope3 for its dedication to sustainability and its contribution to more transparent and accountable carbon footprint assessment in the advertising industry, with a totally open-source contribution and active participation in the ecosystem."""
+Could you provide a list with a short explanation of your portfolio of products and services?,"Measurement: brands and agencies may access measurement directly through our Collaborative Sustainability Platform (scope3.com). Our data is also available through market-leading verification companies, including DoubleVerify, IAS, and Ebiquity. Further, we've made our data available via API to partner toolsets, including brand/agency dashboards and calculators.
+
+Beyond measurement, we have a suite of solutions aimed at helping brands and agencies reduce their emissions:
+
+1) Climate Shield is a pre-bid segment available in several DSPs - including TTD, Yahoo, MSFT/Xandr, Nexxen (formerly Amobee/Tremor), Viant, Basis, and more - that prevents campaigns from serving on 'climate risk' inventory: the highest-carbon domains in a given country and Made for Advertising sites. Agency & brand adopters have found blocking high-carbon inventory typically improves performance, since much of that supply is what you might consider waste: MFA sites, publishers with enormous amounts of reselling, low-attention domains, etc.
+ 
+2) Green Media Products (GMPs) are available through our contracted SSPs and publishers. GMPs enable our partners to curate Deal IDs that exclude 'climate risk' inventory. Carbon compensation is optionally available for the emissions created by these Deal IDs, and is executed through Carbon Direct.
+
+3) Custom algorithms. We are partnered with Chalice, Scibids, Greenbids, MiQ, and others to provide custom algorithms that optimize to both performance and emissions."
+Digital Video - MVPD,Yes
+Digital Video - OTT,Yes
+Digital Video - CTV,Yes
+Digital Video - OLV,Yes
+Digital Audio - Streaming,Yes
+Digital Audio - Podcasting,Yes
+Digital - OOH,Yes
+Social,Yes
+Search,No
+Display - Web,Yes
+Linear Video - TV,No
+Audio - Broadcast,No
+Audio - Satellite Radio,No
+OOH - Other,No
+Print - Magazines,No
+Print - Newspapers,No
+Print - Others,No
+Experiential/ Events,No
+Influencers,No
+Other (please list): various AI use cases,Yes
+"Please list all category verticals you have activated with before? (Auto, CPG, Healthcare, QSR, etc.)",Over 3500 brands across all major verticals have activated Scope3's measurement and reduction solutions.
+Are you a Carbon Neutral organization?,"We have taken concrete steps to ensure we are decarbonizing as an organization. We report on our emissions monthly, compensate for all travel annually, and have policies in place to manage our carbon. These include a sustainable travel policy, global WFH, and use of an events calculator to measure & minimize our footprint when in-person."
+"Do you complete a CDP Questionnaire? If no, do you use others (i.e. Ecovadis)",We have not completed a CDP questionnaire at this time - our primary focus is on the systemic change we can drive as a primary catalyst in the media and advertising ecosystem. We are also working on preparation for b-corp status.
+Are you sBTI certified?,We are currently an SME and preparing our reporting for future company phases in order to set SBTI targets against which we can reduce.
+Do you have any Sustainability Case Studies? (Y/N),Yes - case studies are attached.
+Have you worked with Horizon Media in any capacity in the past? (Y/N),"Yes, in several capacities. Horizon has used our data since 2022 to power client dashboarding (including for Hershey). In 2024, Horizon as a practice converted all PMPs with Sharethrough - a Scope3 partner SSP - into Green Media Products, one of our carbon reduction solutions."
+Tell us about your company values and what makes you unique.,"We are the only end-to-end supply chain emissions data platform to combine public and private data sources to deliver a predictive model of emissions for every publisher and vendor across advertising channels, without the need to add pixels or complexity to the operational workflow of trafficking a campaign. Our emissions data can be integrated with planning, measurement and reporting tools to seamlessly deliver carbon-adjusted metrics and demonstrate progress against climate goals and commitments. We additionally power a number of solutions for emissions reduction, including our Climate Shield pre-bid segment and Green Media Products (GMPs), which both exclude the highest-carbon domains ('climate risk inventory') and Made for Advertising sites."
+What sets you apart from other competitors in this space?,"Our differentiation spans several dimensions: 
+
+1) Category creation and leadership. Prior to Scope3's inception, 'emissions reduction' was typically thought of as relating to a company's physical operations, manufacturing, and traditional supply chain. Scope3 developed a proprietary, owned & operated platform to measure carbon emissions in the media ecosystem, which has created a level of awareness, adoption, and action that did not exist prior to our creation.2) Most comprehensive and granular emissions model. Scope3's activity-based emissions model is the most comprehensive and granular emissions model available commercially today for digital advertising and media, and forms the basis for all Scope3's measurement and reduction products.  3) Unparalleled industry expertise. We are founded and led by a team that invented many of the foundational technologies behind the $100B programmatic advertising industry. Most notably, our CEO Brian O'Kelley was the previously the CEO & Founder of AppNexus and personally invented much of the core infrasturcuture upon which our industry was built. Beyond credentials, this gives Scope3 the background and expertise to accurately understand, model, and measure the digital ecosystem. 4) We live our mission. Namely, to systemically decarbonize media and advertising. We use our mission as the north star for our strategy, culture, and everyday decision making. One consequence of our mission is that we design opinionated solutions that we believe will drive the best outcomes for our core constituents: advertisers, publishers, citizens of the digital world, and our planet. 5) Ubiquitous product accessibility. We have intentionally made our measurement + reduction solutions widely available. Our aim is to ensure we meet our partners 'where they are' - from leading verification companies like the IAS, DV, and Ebiquity, to leading ad tech platforms like Magnite, Xandr, and OpenX, to premier publishers like the NY Times, Meredith, and The Atlantic. 6) Exceptional global service. We have purposely over-indexed on customer support and services resources, available globally on an always-on, 'follow the sun' basis."
+"Please Provide an overview of additional services if applies, please attach documentation when available","We partner with a number of agencies brands in paid engagements, wherein our Solutions group allocates hours to our partners to consult on specific projects. These engagement often take the form of 'Measurement Studies,' in which we work with a client to reduce emissions over a particular time period with neutral-to-positive impacts on media performance. We are happy to have a further discussion on this, particularly as Horizon clients begin coming online with Scope3 measurement. This offering is completely optional and Horizon will not be subject to 'suprise' or unexpected consulting fees - any such agreement would be explicit + contractual."
+What can you share about your fee structure?,"Measurement via our Collaborative Sustainability Platform carries a $0.06 USD CPM rack rate. We are currently discussing with Horizon a preferred pricing agreement. Should scale reach a point at which Horizon or a given client(s) prefers committed subscription pricing, we can explore that together."
+Do you have minimums we should be aware of with respect to project and/or monthly retainer size?,"Typically no, and we are eager to learn more about your desired use cases."
+Do you have a Horizon Media ratecard? ,Currently in negotiation. 
+Have you filled out our HMI Vendor Authorization Form?,We don't believe so. Thank you in advance for providing the PDF.
+"Do you have any exclusivity with current clients and/or industries? If so, do you imagine that they would restrict your ability to work with us?",No.
+How have you managed confidentiality with past clients? (ie Do you share brand success stories? Do you share competitive intel of different brands?),"Our work with each brand and agency is entirely confidential, and we do not share named case studies or proprietary data without explicit approval + marketing rights. We also do not directly share competitive intel across clients, and defer instead to geo + format benchmarks."
+"Please disregard this question if you have activated media for a Horizon client in the past: 
+Have you already completed and provided a Horizon Media Vendor Authorization Form? If not, we can provide you a blank pdf to complete.",We don't believe so. Thank you in advance for providing the PDF.
+What DSPs are you integrated with?,"We partner with DSPs in a variety of ways: powering carbon-aware custom algorithms, integrating our Climate Shield DSP segments, and faciliating in-platform emissions reporting. Our DSP partners include The Trade Desk, Yahoo, MSFT/Xandr, Nexxen, Viant, Basis, Bidtellect, and AdTheorent."
+What SSPs are you integrated with? ,"Magnite
+Sharethrough
+OpenX
+Teads
+Media.net
+Index Exchange
+Picnic
+Plug
+ShowHeroes
+The GoodNet
+GumGum
+Ads for the Planet
+The Goodnet
+Blockthrough
+Givsly
+ADYOULIKE
+InMobi
+Google Curate
+Brave
+DailyMotion
+TripleLift
+PlaceExchange
+Digital Turbine
+Outbrain
+Nexxen
+Xandr Curate
+TrustX
+VIOOH
+VideoHeroes
+Undertone
+Eskimi
+Equativ
+Infolinks
+Viously
+Hivestack"
+Will you provide a summary of a clients current carbon footprint based on current campaigns?  Please provide sample report,"Yes - that is the heart of our our measurement offering. Our partners may access measurement directly through our Collaborative Sustainability Platform at scope3.com (currently the focus of partnership discussions with Horizon) or via market-leading verification companies including DoubleVerify, IAS, and Ebiquity. Examples of measurement at scope3.com are included in the Screenshots tab and attached as PDFs."
+"If yes to above, what information would a client need to provide and in what format?","At minimum, Scope3 needs date (date format), impression volume (integer), and domain/app name (string) to model emissions. 
+Additional reporting granularity can be achieved by providing required inputs and strongly recommend inputs such as country (string), channel (string), seller name (string), network (string), device type (string), creative size wxh (string), video duration (integer), spend (integer), viewable impressions (integer), clicks (integer), video completion rate (integer), total conversions (integer). 
+
+Full list of inputs accepted by Scope3 and accepted formats can be found here - https://docs.scope3.com/docs/media-delivery-schema"
+What granularity does report get down to?  Campaign? Channel? Partner? format? Please provide samle report,"Reporting output in Scope3's Media Reporting dashboard is available by advertiser, country, channel, and campaign. Teams can also export data out via cloud bucket integration at any level of granularity. Emissions can be segmented by  advertiser, country, channel, campaign, device type, insertion order/line item/ad group/placement, creative, creative size/duration, network, or domain/app name. A sample report is attached."
+"Do you have a comparison of carbon emissions output of direct vs programmatic buying?  What level of granularity would that get down to?  Campaign?  Channel, Partner, Format?",Carbon emissions for direct vs. programamtic buying can be provided at the domain and seller  level. This data is optimally viewed by seller to understand seller emissions and emissions by buying path. 
+AccuWeather,Y
+Adevinta NL,N
+Alma Media,Y
+Axel Springer - Media Impact DE,Y
+Burda Forward,Y
+Dailymotion,Y
+Dotdash Media Inc,Y
+Dow Jones,N
+DPG Media,N
+Fandom,Y
+Foxtel,Y
+Future,Y
+Go Media NZ ,N
+Hearst Magazines,Y
+Immediate Media,Y
+Insider Inc.,Y
+JCDecaux ANZ,N
+La Presse,Y
+Lumo NZ,N
+New York Times,Y
+Penske Media Company (PMC),Y
+Ringier Axel Springer Poland,Y
+Ringier CH,N
+Sanoma Finland,N
+SBS Australia,Y
+SHE Media,N
+Snap,Y
+The Atlantic,Y
+Tripadvisor,Y
+Tubi.tv,Y
+United Internet Media,Y
+United Media,N
+Vox Media,N
+"Describe the types of reports provided by your solution (e.g., dashboards, detailed analysis).","Scope3 provides a suite of reporting available to clients. Through our Collaborative Sustainability Platform (CSP), clients may access in depth data analytics, including visual breakdowns of emissions (gCO?PM) per property, dashboards for Green Media Products (GMP's) and dashboards specific to campaign related data. All of these reports are based on impression data. Clients can customise all visual reporting to focus on their campaign/deals, as well as relevant geographies.
+
+Additionally, Scope3 has benchmark data available both through our API, or directly within our Collaborative Sustainability Platform (CSP). Clients can use these benchmarks to evaluate inventory performance and adjust deals and campaigns, where desired, to assess gCO?PM and calculate emissions reduction.
+
+https://docs.scope3.com/reference/benchmarks-1
+https://scope3.com/benchmarks"
+Explain the frequency of reporting and updates if applicable. ,"Reporting is available in real-time. Our emissions model is updated daily, with a monthly dataset provided to clients for easier usage."
+Share 2-3 examples of insights or recommendations based on your measurement results.,"Scope3 publishes both independent and collaborative research based on our measurement results (https://scope3.com/research). We produce a semiannual State of Sustainable Advertising report (example attached) and monthly newsletter as well as ad hoc research and insights to raise awareness and educate on the work that we and our partners are doing together to accelerate the growing shift toward sustainable advertising. 
+
+Key insights that we are especially proud of and that we believe have effected meaningful change in behavior resulting in significant emissions reduction include our work on:
+
+Problematic Placements
+Recent research on ad waste at the placement level, aka problematic placements shows that of  13.8k domains analyzed 33% had placements that rendered out of consumer view or refreshed constantly — two indicators that these ad slots won’t drive value for the marketer.
+
+MFA
+A joint study conducted in partnership with Ebiquity analyzed more than $375M of digital advertising spend across 116bn display ad impressions from 43 brand advertisers and revealed that 15.3% of their advertising spend is wasted on inventory that generates no value to their business while generating excessive amounts of CO2 emissions."
+"Describe initial setup costs, if any. ","Scope3 structures commercial partnerships on an all-inclusive SaaS basis that empowers our clients to weave emissions data throughout their business with flexible, always on, unlimited access through our platform and APIs. There are no additional costs for setup."
+"Are there ongoing monitoring and reporting fees? If so, please specify. ",All monitoring and and reporting is covered by the SaaS agreement. 
+"Are there additional costs for custom reporting or ad-hoc analysis? If so, please specify. ","In special cases, clients may opt to retain Scope3 services for additional ad-hoc consulting beyond included monthly consulting hours. The hourly rate for this service is $575 and is available to address needs that arise outside of the contracted service as defined within the partnership agreement."
+Please explain any other relevant costs or fees associated with your services. ,No other costs or fees apply.
