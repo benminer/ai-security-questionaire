@@ -1,6 +1,7 @@
-import { http } from "@ampt/sdk";
+import { params, http } from "@ampt/sdk";
 import cors from "cors";
 import asyncHandler from "express-async-handler";
+import morgan from "morgan";
 import express, { Router, type Request, type Response } from "express";
 import {
   Questionnaire,
@@ -26,6 +27,10 @@ app.use(
     ],
   })
 );
+
+if (params("ENV_TYPE") === "personal") {
+  app.use(morgan("tiny"));
+}
 app.use(express.json());
 
 // Mount api to /api base route
