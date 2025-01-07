@@ -10,7 +10,6 @@ import morgan from 'morgan'
 // enable event listeners
 Questionnaire.initListeners()
 
-// Create express app and router
 const app = express()
 const api = Router()
 
@@ -23,12 +22,12 @@ app.use(
   })
 )
 
+// log incoming requests in sandbox env
 if (params('ENV_TYPE') === 'personal') {
   app.use(morgan('tiny'))
 }
 app.use(express.json())
 
-// Mount api to /api base route
 app.use('/api', api)
 
 api.post('/gemini', (req, res) => {
@@ -228,5 +227,4 @@ api.post(
   })
 )
 
-// Expose the app to the Internet
 http.node.use(app)

@@ -1,17 +1,25 @@
 import { readFileSync } from 'node:fs'
+import assert from 'node:assert'
 import { params } from '@ampt/sdk'
 import * as aiplatform from '@google-cloud/aiplatform'
 import { parse } from 'csv-parse/sync'
 import { Answer, type AnswerRow } from './models/answer'
 
-const API_ENDPOINT = '14814207.us-central1-506564556600.vdb.vertexai.goog'
-const INDEX_ENDPOINT =
-  'projects/506564556600/locations/us-central1/indexEndpoints/1296082316589793280'
-const DEPLOYED_INDEX_ID = 'ai_hackathon_security_ques_1735921282266'
-const PROJECT_ID = 'scope3-dev'
+const GOOGLE_CLOUD_CREDENTIALS = params('GOOGLE_CREDENTIALS_JSON')
+assert(GOOGLE_CLOUD_CREDENTIALS, 'GOOGLE_CLOUD_CREDENTIALS is not defined')
+const GOOGLE_CLOUD_PARAMS = params().group('GOOGLE_CLOUD') as Record<
+  string,
+  string
+>
+assert(GOOGLE_CLOUD_PARAMS, 'GOOGLE_CLOUD_PARAMS is not defined')
+
+const API_ENDPOINT = GOOGLE_CLOUD_PARAMS.API_ENDPOINT
+const INDEX_ENDPOINT = GOOGLE_CLOUD_PARAMS.INDEX_ENDPOINT
+const DEPLOYED_INDEX_ID = GOOGLE_CLOUD_PARAMS.DEPLOYED_INDEX_ID
+const PROJECT_ID = GOOGLE_CLOUD_PARAMS.PROJECT_ID
 const LOCATION = 'us-central1'
 
-const CREDENTIALS = JSON.parse(params('GOOGLE_CREDENTIALS_JSON'))
+const CREDENTIALS = JSON.parse(GOOGLE_CLOUD_CREDENTIALS.trim())
 interface Embedding {
   id: string
   question: string
