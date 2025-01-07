@@ -2,10 +2,6 @@
     <div width="100%" align="center">
         <h1>Ampt + Express (TypeScript) Template</h1>
     </div>
-    <p align="center">
-        <img src="https://ampt.dev/public/templates/ampt-api.svg" alt="ampt-logo" width="200"/>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg" alt="ts-logo" width="180"/>
-    </p>
 </p>
 
 ## Welcome to Ampt!
