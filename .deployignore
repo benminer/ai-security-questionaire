@@ -1,0 +1,5 @@
+.vscode/*.json
+embeddings.json
+google-credentials.json
+README.md
+csvs/*.csv

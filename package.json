@@ -6,7 +6,9 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
-    "start": "ampt"
+    "start": "ampt",
+    "biome:check": "biome check --write",
+    "biome:format": "biome format --write"
   },
   "dependencies": {
     "@ampt/data": "^1.0.26",
@@ -28,6 +30,7 @@
     "org": "scope3"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.17",
     "@types/luxon": "^3.4.2",

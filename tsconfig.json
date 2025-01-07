@@ -1,12 +1,19 @@
 {
-  "compilerOptions": {
-    "target": "es2022",
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "outDir": "dist",
-    "strict": true,
-    "esModuleInterop": true
-  },
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules"]
+	"compilerOptions": {
+		"target": "es2022",
+		"module": "ESNext",
+		"moduleResolution": "Node",
+		"outDir": "dist",
+		"strict": true,
+		"esModuleInterop": true,
+		"baseUrl": ".",
+		"paths": {
+			"@models": ["./models/index.ts"],
+			"@models/*": ["./models/*"],
+			"@gemini": ["./gemini.ts"],
+			"@vector-search": ["./vector-search.ts"]
+		}
+	},
+	"include": ["**/*.ts"],
+	"exclude": ["node_modules"]
 }

@@ -3,4 +3,7 @@
 .devcontainer.json
 .gitpod.yml
 *.csv
-!google-credentials.json
+google-credentials.json
+.vscode/*.json
+README.md
+
