@@ -4,7 +4,7 @@ import { params } from '@ampt/sdk'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import type { Request, Response } from 'express'
 
-import { type CustomerType, QuestionnaireType } from './models/questionnaire'
+import { type CustomerType, QuestionnaireType } from '@models'
 
 const genAI = new GoogleGenerativeAI(params('GEMINI_API_KEY'))
 export const gemini = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
@@ -43,6 +43,12 @@ export const answerQuestionBatch = async (params: {
     readFile(path.join('system-prompt-files', 'policies.txt'), 'utf-8'),
     readFile(path.join('system-prompt-files', 'methodology.txt'), 'utf-8')
   ])
+
+  const contents = questions.map((q) => ({
+    role: 'user',
+    parts: [{ text: q.trim().replace(/^[?|!|.]/, '') }]
+  }))
+
   const result = await gemini.generateContent({
     systemInstruction: `
       You are an expert at answering RFI and security questions for Scope3. 
@@ -62,12 +68,7 @@ export const answerQuestionBatch = async (params: {
       \n
       ${methodology}
       `,
-    contents: [
-      {
-        role: 'user',
-        parts: [{ text: questions.join('\n') }]
-      }
-    ]
+    contents
   })
   const resultText = result.response.text()
   const questionAnswers = resultText.replace(/```(json)?/g, '')

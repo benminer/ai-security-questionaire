@@ -86,6 +86,8 @@ export class Answer {
           data.set(pair)
       )
     )
+
+    console.info(`Saved ${Object.keys(answers).length} answers`)
   }
 
   static async getByQuestionHash(questionHash: string) {
