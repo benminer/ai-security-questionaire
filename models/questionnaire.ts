@@ -126,7 +126,6 @@ export class Questionnaire {
           type: questionnaire.type,
           customerType: questionnaire.customerType,
         });
-        console.info("answers", answers);
         await Answer.batchCreate({
           questionnaireId: questionnaire.id,
           answers,
@@ -155,8 +154,6 @@ export class Questionnaire {
     const questionnaire = Questionnaire.fromRow(item as QuestionnaireRow);
     console.info(`Processing ${questionnaire.name}...`);
     const questions = await extractQuestions(questionnaire.text);
-    console.info("extracted questions", questions);
-
     if (questions?.length) {
       questionnaire.json = questions;
       questionnaire.state = QuestionnaireState.PROCESSING;

@@ -70,7 +70,6 @@ export const answerQuestionBatch = async (params: {
     ],
   });
   const resultText = result.response.text();
-  console.log("\nresultText", resultText);
   const questionAnswers = resultText.replace(/```(json)?/g, "");
   const parsed = JSON.parse(questionAnswers);
   return parsed;
