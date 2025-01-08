@@ -85,9 +85,13 @@ export const answerQuestionBatch = async (params: {
           : ''
       }
 
-      Here are some previous answers to similar questions:
+      ${
+        previousAnswers.length
+          ? `Here are some previous answers to similar questions:
       ${previousAnswers.join('\n')}
-      \n
+      \n`
+          : ''
+      }
       Here is some context:
       ${info}
       \n
