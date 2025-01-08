@@ -1,42 +1,67 @@
 import { createHash } from 'node:crypto'
 import { data } from '@ampt/data'
+import { events } from '@ampt/sdk'
 import { splitEvery } from 'ramda'
+import { v4 as uuidv4 } from 'uuid'
 
-import { answerQuestionBatch } from '@gemini'
+import { answerQuestion, answerQuestionBatch } from '@gemini'
 import {
   CustomerType,
   Questionnaire,
+  QuestionnaireState,
   QuestionnaireType
 } from '@models/questionnaire'
 
 export interface AnswerRow {
   id: string
   question: string
-  answer: string
+  answer: string | undefined
   approved: boolean | undefined
   // This is optional so we can hydrate previous questionnaire answers
   questionnaireId: string | undefined
+  uuid: string
 }
 
+export type CreateAnswerParams = Omit<AnswerRow, 'id' | 'approved' | 'uuid'>
+
 enum AnswerQueryMap {
-  QuestionnaireId = 'label1'
+  QuestionnaireId = 'label1',
+  QuestionHash = 'label2'
 }
 
 export class Answer {
   static prefix = 'answer'
   static label = 'questionnaire'
+  static label2 = 'answerhash'
 
+  static processAnswersEvent = 'answer:process'
+
+  uuid: string
   id: string
-  questionnaireId: string | undefined
   question: string
-  answer: string
+  questionnaireId: string | undefined
+  answer: string | undefined
   approved: boolean | undefined
 
   static hash(question: string) {
     return createHash('sha256').update(question).digest('hex').slice(0, 12)
   }
 
+  static initListeners() {
+    data.on(
+      `created:${Answer.prefix}:*`,
+      { timeout: 60000 * 5 },
+      Answer.onCreated
+    )
+    events.on(
+      Answer.processAnswersEvent,
+      { timeout: 60000 * 5 },
+      Answer.onAnswerProcessEvent
+    )
+  }
+
   constructor(params: AnswerRow) {
+    this.uuid = params.uuid
     this.id = params.id
     this.questionnaireId = params.questionnaireId
     this.question = params.question
@@ -44,8 +69,74 @@ export class Answer {
     this.approved = params.approved
   }
 
-  static async create(params: AnswerRow) {
-    const answer = new Answer(params)
+  static async onCreated(event: { item: { value: AnswerRow } }) {
+    const item = event.item.value
+    const answer = Answer.fromRow(item as AnswerRow)
+    await answer.publishAnswerEvent()
+
+    // update the questionnaire state to ANSWERING if it is processing
+    if (answer.questionnaireId) {
+      const questionnaire = await Questionnaire.get(answer.questionnaireId)
+      if (questionnaire?.state === QuestionnaireState.PROCESSING) {
+        questionnaire.state = QuestionnaireState.ANSWERING
+        await questionnaire.save()
+      }
+    }
+  }
+
+  static async onAnswerProcessEvent(event: { body: AnswerRow }) {
+    const { body } = event
+    const unanswered = Answer.fromRow(body)
+    console.log(`processing answer: ${unanswered.question}`)
+
+    let type: QuestionnaireType = QuestionnaireType.OTHER
+    let customerType: CustomerType = CustomerType.OTHER
+
+    if (unanswered.questionnaireId) {
+      const questionnaire = await Questionnaire.get(unanswered.questionnaireId)
+      if (questionnaire) {
+        type = questionnaire.type
+        customerType = questionnaire.customerType
+      }
+    }
+
+    const answer = await answerQuestion({
+      question: unanswered.question,
+      type,
+      customerType
+    })
+
+    await unanswered.update({ answer })
+
+    console.log(`Answered question ${unanswered.question}`)
+
+    if (unanswered.questionnaireId) {
+      const answers = await Answer.listByQuestionnaireId(
+        unanswered.questionnaireId
+      )
+      // if all answers are answered, update the questionnaire state to COMPLETED
+      if (answers.every((answer) => Boolean(answer.answer))) {
+        const questionnaire = await Questionnaire.get(
+          unanswered.questionnaireId
+        )
+        if (questionnaire) {
+          questionnaire.state = QuestionnaireState.COMPLETED
+          console.log(
+            `all answers for questionnaire ${questionnaire.name} are answered, setting state to COMPLETED`
+          )
+          await questionnaire.save()
+        }
+      }
+    }
+  }
+
+  static async create(params: CreateAnswerParams) {
+    const answer = new Answer({
+      ...params,
+      id: Answer.hash(params.question),
+      uuid: uuidv4(),
+      approved: undefined
+    })
     await answer.save()
     return answer
   }
@@ -62,20 +153,26 @@ export class Answer {
         const question = _question.trim()
         const answer = _answer.trim()
         const questionId = Answer.hash(question)
+        const indexes = {
+          [AnswerQueryMap.QuestionHash]: `${Answer.label2}:${questionId}`
+        }
+        const uuid = uuidv4()
         return {
-          key: `${Answer.prefix}:${questionId}`,
+          key: `${Answer.prefix}:${uuid}`,
           value: {
             questionnaireId,
             question,
             answer,
             id: questionId,
+            uuid,
             approved: undefined
           },
           ...(questionnaireId
             ? {
+                ...indexes,
                 [AnswerQueryMap.QuestionnaireId]: `${Answer.label}:${questionnaireId}:${questionId}`
               }
-            : {})
+            : indexes)
         }
       })
     )
@@ -91,8 +188,11 @@ export class Answer {
   }
 
   static async getByQuestionHash(questionHash: string) {
-    const answer = await data.get<AnswerRow>(`${Answer.prefix}:${questionHash}`)
-    return answer ? new Answer(answer) : null
+    const answer = await data.getByLabel<AnswerRow>(
+      AnswerQueryMap.QuestionHash,
+      `${Answer.label2}:${questionHash}`
+    )
+    return answer.items.map((answer) => new Answer(answer.value))?.[0] ?? null
   }
 
   static async listByQuestionnaireId(id: string) {
@@ -184,9 +284,20 @@ export class Answer {
     }
   }
 
+  async publishAnswerEvent() {
+    await events.publish(
+      Answer.processAnswersEvent,
+      {
+        after: Math.floor(Math.random() * 1000) // delay each answer by a random amount b/w 0-1000ms to avoid rate limiting
+      },
+      this.toJson()
+    )
+  }
+
   toJson() {
     return {
       id: this.id,
+      uuid: this.uuid,
       questionnaireId: this.questionnaireId,
       question: this.question,
       answer: this.answer,
@@ -202,11 +313,12 @@ export class Answer {
     const { overwrite = false, meta = true } = params || {}
     const options = {
       overwrite, // if set to true, overwrite the item if it already exists
-      meta // if set to true, return the item
+      meta, // if set to true, return the item
+      [AnswerQueryMap.QuestionHash]: `${Answer.label2}:${this.id}`
     }
 
     await data.set<AnswerRow>(
-      `${Answer.prefix}:${this.id}`,
+      `${Answer.prefix}:${this.uuid}`,
       this.toJson(),
       // Set an Index so we can query by Questionnare ID, if it set
       this.questionnaireId

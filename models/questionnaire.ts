@@ -1,10 +1,8 @@
 import { data } from '@ampt/data'
-import { events } from '@ampt/sdk'
 import { DateTime } from 'luxon'
-import { splitEvery } from 'ramda'
 import { v4 as uuidv4 } from 'uuid'
 
-import { answerQuestionBatch, extractQuestions } from '@gemini'
+import { extractQuestions } from '@gemini'
 import { Answer } from '@models/answer'
 
 export enum QuestionnaireState {
@@ -53,8 +51,6 @@ enum QuestionnaireQueryMap {
 
 export class Questionnaire {
   static prefix = 'questionnaire'
-  static answerPrefix = 'questionnaire.answer'
-  static processAnswersEvent = 'questionnaire.answer.batch'
 
   id: string
   name: string
@@ -106,51 +102,6 @@ export class Questionnaire {
       { timeout: 60000 * 5 },
       Questionnaire.onCreated
     )
-    events.on(
-      Questionnaire.processAnswersEvent,
-      { timeout: 60000 * 5 },
-      Questionnaire.onAnswerBatch
-    )
-  }
-
-  static async onAnswerBatch(event: {
-    body: {
-      id: string
-      totalBatches: number
-      batchNumber: number
-      batch: string[]
-    }
-  }) {
-    const { id, totalBatches, batchNumber, batch } = event.body
-    const questionnaire = await Questionnaire.get(id)
-    if (questionnaire && questionnaire.state === QuestionnaireState.ANSWERING) {
-      try {
-        const answers = await answerQuestionBatch({
-          questions: batch,
-          type: questionnaire.type,
-          customerType: questionnaire.customerType
-        })
-        await Answer.batchCreate({
-          questionnaireId: questionnaire.id,
-          answers
-        })
-      } catch (e) {
-        console.error('Error answering batch', e)
-        questionnaire.error = 'Error answering batch'
-        questionnaire.state = QuestionnaireState.ERROR
-        await questionnaire.save()
-      } finally {
-        if (
-          batchNumber === totalBatches - 1 &&
-          questionnaire.state === QuestionnaireState.ANSWERING
-        ) {
-          questionnaire.state = QuestionnaireState.COMPLETED
-          console.info(`Questionnaire ${questionnaire.id} completed`)
-          questionnaire.dateCompleted = DateTime.now().toMillis()
-          await questionnaire.save()
-        }
-      }
-    }
   }
 
   static async onCreated(event: { item: { value: QuestionnaireRow } }) {
@@ -162,7 +113,18 @@ export class Questionnaire {
       questionnaire.json = questions
       questionnaire.state = QuestionnaireState.PROCESSING
       await questionnaire.save()
-      await questionnaire.batchProcessAnswers()
+      await Promise.all(
+        (questionnaire.json ?? []).map((question: string) =>
+          Answer.create({
+            question,
+            questionnaireId: questionnaire.id,
+            answer: undefined
+          })
+        )
+      )
+      console.log(
+        `Created ${questions.length} answers for questionnaire ${questionnaire.name}`
+      )
     } else {
       console.error('Error extracting questions', {
         name: questionnaire.name,
@@ -297,12 +259,13 @@ export class Questionnaire {
     console.info('saved questionnaire', this.id, this.name)
   }
 
-  async delete(params: { removeAnswers: boolean }) {
+  async delete(params: { removeAnswers: boolean; force?: boolean }) {
+    const { removeAnswers = false, force = false } = params
     if (
       this.state === QuestionnaireState.COMPLETED ||
-      this.state === QuestionnaireState.ERROR
+      this.state === QuestionnaireState.ERROR ||
+      force
     ) {
-      const { removeAnswers } = params || { removeAnswers: false }
       await data.remove(`${Questionnaire.prefix}:${this.id}`)
       console.info(`Deleted questionnaire ${this.name}`)
       if (removeAnswers) {
@@ -315,33 +278,6 @@ export class Questionnaire {
     } else {
       throw new Error(
         `Cannot Delete Questionnaire while in ${this.state} state!`
-      )
-    }
-  }
-
-  async batchProcessAnswers() {
-    if (this.json && this.state === QuestionnaireState.PROCESSING) {
-      this.state = QuestionnaireState.ANSWERING
-      await this.save()
-
-      console.info(
-        `answering ${this.json?.length} questions for questionnaire ${this.id}`
-      )
-
-      const batches = splitEvery(5, this.json)
-      await Promise.all(
-        batches.map(async (batch, index) =>
-          events.publish(
-            Questionnaire.processAnswersEvent,
-            { after: index * 50 }, // delay each batch by 50ms
-            {
-              id: this.id,
-              totalBatches: batches.length,
-              batchNumber: index,
-              batch
-            }
-          )
-        )
       )
     }
   }

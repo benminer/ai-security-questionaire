@@ -5,6 +5,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import type { Request, Response } from 'express'
 
 import { type CustomerType, QuestionnaireType } from '@models'
+import { getSimilarAnswers } from '@vector-search'
 
 const genAI = new GoogleGenerativeAI(params('GEMINI_API_KEY'))
 export const gemini = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
@@ -30,6 +31,66 @@ export const extractQuestions = async (text: string) => {
     console.error('Error extracting questions:', error)
     return null
   }
+}
+
+export const getSystemPrompt = async (
+  question: string,
+  type: QuestionnaireType,
+  customerType: CustomerType
+) => {
+  const [info, policies, methodology, similarAnswers] = await Promise.all([
+    readFile(path.join('system-prompt-files', 'info.txt'), 'utf-8'),
+    readFile(path.join('system-prompt-files', 'policies.txt'), 'utf-8'),
+    readFile(path.join('system-prompt-files', 'methodology.txt'), 'utf-8'),
+    getSimilarAnswers([question])
+  ])
+
+  let similarAnswer = undefined
+  if (
+    similarAnswers.length &&
+    similarAnswers?.[0]?.neighbors?.length &&
+    similarAnswers[0].neighbors[0].distance >= 0.75
+  ) {
+    similarAnswer = similarAnswers[0].neighbors[0].answer
+  }
+
+  return `
+      You are an expert at answering RFI and security questions for Scope3. 
+      IMPORTANT: Your response must only be the answer to the question. Do not include any additional text or markdown formatting. Keep the answer concise and to the point.
+      Note that these questions are all regarding Scope3, and may not always be phrased as a question.
+      ${
+        // Only add this instruction if the questionnaire type is not OTHER
+        type !== QuestionnaireType.OTHER
+          ? `This is a ${type} questionnaire for a potential ${customerType} customer. Use this information to better answer the questions.`
+          : ''
+      }
+      ${
+        similarAnswer
+          ? `Here is a similar answer to the question: ${similarAnswer}. Please use this to better answer the question.`
+          : ''
+      }
+      Here is some context:
+      ${info}
+      \n
+      ${policies}
+      \n
+      ${methodology}
+      `
+}
+
+export const answerQuestion = async (params: {
+  question: string
+  type: QuestionnaireType
+  customerType: CustomerType
+}): Promise<string> => {
+  const { question: _question, type, customerType } = params
+  const question = _question.trim().replace(/^[?|!|.]/, '')
+  const systemPrompt = await getSystemPrompt(question, type, customerType)
+  const result = await gemini.generateContent({
+    systemInstruction: systemPrompt,
+    contents: [{ role: 'user', parts: [{ text: question }] }]
+  })
+  return result.response.text()
 }
 
 export const answerQuestionBatch = async (params: {

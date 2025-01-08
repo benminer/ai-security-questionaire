@@ -15,7 +15,9 @@ writeFileSync('embeddings.json', jsonlData)
 // Save answers to the database.
 const answers: Record<string, string> = {}
 for (const answer of questionData.answers) {
-  answers[answer.question] = answer.answer
+  if (answer.answer) {
+    answers[answer.question] = answer.answer
+  }
 }
 
 await Answer.batchCreate({ answers })
