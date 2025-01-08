@@ -46,7 +46,11 @@ export const getSystemPrompt = async (
   ])
 
   let similarAnswer = undefined
-  if (similarAnswers.length && similarAnswers?.[0]?.neighbors?.length) {
+  if (
+    similarAnswers.length &&
+    similarAnswers?.[0]?.neighbors?.length &&
+    similarAnswers[0].neighbors[0].distance >= 0.75
+  ) {
     similarAnswer = similarAnswers[0].neighbors[0].answer
     console.log('similarAnswer', similarAnswer)
   }
