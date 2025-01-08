@@ -9,6 +9,7 @@ import morgan from 'morgan'
 
 // enable event listeners
 Questionnaire.initListeners()
+Answer.initListeners()
 
 const app = express()
 const api = Router()
@@ -200,7 +201,13 @@ api.get(
   '/questionnaire/:id/answers',
   asyncHandler(async (req: Request, res: Response) => {
     const answers = await Answer.listByQuestionnaireId(req.params.id)
-    res.status(200).send(answers.map((answer) => answer.toJson()))
+    res.status(200).send(
+      answers
+        // Since we process answers in the background,
+        // Not all answers will be answered immediately
+        .filter((answer) => Boolean(answer.answer))
+        .map((answer) => answer.toJson())
+    )
     return
   })
 )
