@@ -72,7 +72,6 @@ export class Answer {
   static async onCreated(event: { item: { value: AnswerRow } }) {
     const item = event.item.value
     const answer = Answer.fromRow(item as AnswerRow)
-    console.log(`new answer created: ${answer.question}`)
     await answer.publishAnswerEvent()
 
     // update the questionnaire state to ANSWERING if it is processing
@@ -329,7 +328,5 @@ export class Answer {
           }
         : options
     )
-
-    console.log(`saved new question/answer: ${this.question}`)
   }
 }

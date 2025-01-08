@@ -52,7 +52,6 @@ export const getSystemPrompt = async (
     similarAnswers[0].neighbors[0].distance >= 0.75
   ) {
     similarAnswer = similarAnswers[0].neighbors[0].answer
-    console.log('similarAnswer', similarAnswer)
   }
 
   return `
