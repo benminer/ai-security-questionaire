@@ -13,7 +13,7 @@ The main API is built on top of Express, and is located in the `index.ts` file.
 
 ## How it works
 
-Users in the admin UI create questionnaires, from there, we injest this data into the `questionnaire` table.
+Users in the admin UI create questionnaires, from there, we ingest this data into the `questionnaire` table.
 
 Upon creation of a new questionnaire, we ask Gemini to extract the questions from the text:
 ```js
