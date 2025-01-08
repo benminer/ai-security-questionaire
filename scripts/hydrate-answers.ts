@@ -4,13 +4,13 @@ import { getEmbeddings, getQuestionsFromCsvs } from '@vector-search'
 
 // Generate data used to create the vector search index.
 const questionData = getQuestionsFromCsvs([
-  '../csvs/rfi-question-source-clean.csv',
-  '../csvs/security-questions-v2-source-clean.csv'
+  'csvs/rfi-question-source-clean.csv',
+  'csvs/security-questions-v2-source-clean.csv'
 ])
 
 const embeddingData = await getEmbeddings(questionData.questions)
 const jsonlData = embeddingData.map((item) => JSON.stringify(item)).join('\n')
-writeFileSync('../embeddings.json', jsonlData)
+writeFileSync('embeddings.json', jsonlData)
 
 // Save answers to the database.
 const answers: Record<string, string> = {}
