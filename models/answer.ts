@@ -196,11 +196,21 @@ export class Answer {
   }
 
   static async listByQuestionnaireId(id: string) {
-    const { items } = await data.getByLabel<AnswerRow>(
+    const { items, next: nextPage } = await data.getByLabel<AnswerRow>(
       AnswerQueryMap.QuestionnaireId,
       `${Answer.label}:${id}:*`
     )
-    return items.map((answer) => new Answer(answer.value))
+
+    const results = items.map((answer) => new Answer(answer.value))
+
+    let next = nextPage
+    while (next) {
+      const { items, next: nextPage } = await next()
+      results.push(...items.map((answer) => new Answer(answer.value)))
+      next = nextPage
+    }
+
+    return results
   }
 
   static async getByQuestionnaireIdAndHash(
