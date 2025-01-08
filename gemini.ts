@@ -5,6 +5,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import type { Request, Response } from 'express'
 
 import { type CustomerType, QuestionnaireType } from '@models'
+import { getSimilarAnswers } from '@vector-search'
 
 const genAI = new GoogleGenerativeAI(params('GEMINI_API_KEY'))
 export const gemini = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
@@ -17,6 +18,9 @@ export interface AnalyseDataRequest extends Request {
     text: string
   }
 }
+
+const cleanQuestion = (question: string) =>
+  question.trim().replace(/^[?|!|.]/, '')
 
 export const extractQuestions = async (text: string) => {
   try {
@@ -38,21 +42,40 @@ export const answerQuestionBatch = async (params: {
   customerType: CustomerType
 }) => {
   const { questions, type, customerType } = params
-  const [info, policies, methodology] = await Promise.all([
+  const [info, policies, methodology, _previousAnswers] = await Promise.all([
     readFile(path.join('system-prompt-files', 'info.txt'), 'utf-8'),
     readFile(path.join('system-prompt-files', 'policies.txt'), 'utf-8'),
-    readFile(path.join('system-prompt-files', 'methodology.txt'), 'utf-8')
+    readFile(path.join('system-prompt-files', 'methodology.txt'), 'utf-8'),
+    getSimilarAnswers(questions)
   ])
+
+  const previousAnswers: string[] = (_previousAnswers ?? []).reduce(
+    (acc, curr) => {
+      if (curr.neighbors.length) {
+        acc.push(`${cleanQuestion(curr.question)}\n${curr.neighbors[0].answer}`)
+      }
+      return acc
+    },
+    [] as string[]
+  )
 
   const contents = questions.map((q) => ({
     role: 'user',
-    parts: [{ text: q.trim().replace(/^[?|!|.]/, '') }]
+    parts: [
+      {
+        text: cleanQuestion(q)
+      }
+    ]
   }))
 
   const result = await gemini.generateContent({
     systemInstruction: `
       You are an expert at answering RFI and security questions for Scope3. 
-      IMPORTANT: You must ONLY return a valid JSON object with no additional text or markdown formatting. The JSON object must use the "question" as key and "answer" as value. Answer to the best of your ability. Keep answers concise and to the point.
+      IMPORTANT: You must ONLY return a valid JSON object with no additional text or markdown formatting. The JSON object must use the question as key and answer as the value. Answer to the best of your ability. Keep answers concise and to the point.
+      Like this:
+      {
+        'This is the provided Question': 'This is the answer to the question'
+      }
       For multi-line answers, join them with a newline, the JSON should not be nested!
       Note that these questions are all regarding Scope3, and may not always be phrased as a question.
       ${
@@ -61,6 +84,10 @@ export const answerQuestionBatch = async (params: {
           ? `This is a ${type} questionnaire for a potential ${customerType} customer. Use this information to better answer the questions.`
           : ''
       }
+
+      Here are some previous answers to similar questions:
+      ${previousAnswers.join('\n')}
+      \n
       Here is some context:
       ${info}
       \n
@@ -71,6 +98,7 @@ export const answerQuestionBatch = async (params: {
     contents
   })
   const resultText = result.response.text()
+  console.log({ resultText })
   const questionAnswers = resultText.replace(/```(json)?/g, '')
   const parsed = JSON.parse(questionAnswers)
   return parsed

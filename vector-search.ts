@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import assert from 'node:assert'
+import { flatten, splitEvery } from 'ramda'
 import { params } from '@ampt/sdk'
 import * as aiplatform from '@google-cloud/aiplatform'
 import { parse } from 'csv-parse/sync'
@@ -70,7 +71,7 @@ export async function getEmbeddings(
     const request = { endpoint, instances, parameters }
     const client = new PredictionServiceClient(clientOptions)
     const [response] = await client.predict(request)
-    const predictions = response.predictions
+    const predictions = response.predictions ?? []
 
     const embeddings: Embedding[] = (
       predictions as unknown as Prediction[]
@@ -85,21 +86,13 @@ export async function getEmbeddings(
         question: text
       }
     })
-
     return embeddings
   }
 
-  const result: { id: string; question: string; embedding: number[] }[] = []
-
   // Only 250 embeddings can be generated at a time
-  for (let offset = 0; offset < texts.length; offset += 250) {
-    const batch = texts.slice(offset, offset + 250)
-    const embeddings = await callPredict(batch)
-
-    if (embeddings.length) {
-      result.push(...embeddings)
-    }
-  }
+  const batches = splitEvery(250, texts)
+  const result: { id: string; question: string; embedding: number[] }[] =
+    flatten(await Promise.all(batches.map(callPredict)))
 
   return result
 }
@@ -147,7 +140,16 @@ export async function getQuestionNearestNeighbors(questions: string[]) {
   })
 }
 
-export async function getSimilarAnswers(questions: string[]) {
+export async function getSimilarAnswers(questions: string[]): Promise<
+  {
+    question: string
+    neighbors: {
+      question: string
+      answer: string
+      distance: number
+    }[]
+  }[]
+> {
   const nearestNeighbors = await getQuestionNearestNeighbors(questions)
 
   const answers =
